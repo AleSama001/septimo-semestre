@@ -1,0 +1,630 @@
+Subdirección de Diseño Instruccional
+Subdirección de Evaluación de Resultados de Aprendizaje
+2024 1
+Evaluación Parcial N° 2
+Procesos básicos con Big Data
+Estudiante
+Sigla Nombre Asignatura Tiempo Asignado % Ponderación
+AVY1101 Big Data 4h 40%
+1. Situación Evaluativa:
+ Ejecución práctica x
+Entrega de
+encargo
+ x Presentación
+2. Instrucciones
+Descripción general de la evaluación
+El/la estudiante debe construir los procesos de (1) ingesta, (2) transformación y limpieza, (3) carga en una base de datos en el ambiente Big
+Data, para el conjunto de datos del caso en modalidad batch. Los procesos involucrados deben considerar el manejo de errores
+correspondientes, para evitar “caídas” en la ejecución de estos.
+ El propósito de esta evaluación es evaluar los siguientes Indicadores de Logro:
+o IL 2.1 Construye procesos de carga de datos Batch en diferentes formatos y desde diversas fuentes.
+o Il 2.2 Almacena la información para realizar procesos de limpieza y transformación de datos.
+Subdirección de Diseño Instruccional
+Subdirección de Evaluación de Resultados de Aprendizaje
+2024 2
+o IL 2.3 Construye procesos de limpieza, transformación y almacenamiento de grandes volúmenes de datos.
+o IL 2.4 Construye gráficos que permitan mostrar de manera simple los insight relevantes encontrados en los datos.
+ Esta evaluación consiste en una entrega de encargo con presentación y tiene un 40% de ponderación s obre la nota final de las evaluaciones
+parciales.
+ El Tiempo asignado para el desarrollo del encargo es de 4 semanas (entrega de instrucciones la semana 8), entregándose el informe el
+mismo día de la presentación, la semana 12. Para la presentación o defensa cuentan con 10 (minutos) y se realiza en parejas en Taller de
+alto computo.
+ La distribución de los porcentajes de las situaciones evaluativas que componen esta evaluación es la siguiente:
+Evaluación
+Porcentaje dentro
+de la asignatura
+Tipo de situación
+evaluativa
+Distribución de
+porcentajes
+Evaluación Parcial N° 2 40%
+A Encargo 30%
+B Presentación 70%
+Subdirección de Diseño Instruccional
+Subdirección de Evaluación de Resultados de Aprendizaje
+2024 3
+Instrucciones Específicas
+
+Dimensión encargo:
+Deberán realizar a gestión de grandes volúmenes de Datos, mediante la carga histórica de todos los archivos disponibles, la cual permita a los
+usuarios responder diversas preguntas de negocio relacionadas con el caso a resolver.
+Paso 1: Realizar las conexiones con la fuente de origen de datos (estas pueden ser bases de datos, archivos que deben descargar desde internet,
+etc.).
+Paso 2: Descargar y/o generar los archivos al dataLake con los servicios para compartir archivos con clientes o proveedores. Generar repositorios
+de datos que almacenan grandes cantidades de datos, realizando un DataLake con BigQuery o con Cloud Storage para compartir datos con clientes
+o proveedores.
+Paso 3: Construir los procesos de limpieza, transformación y carga al modelo de datos final.
+Paso 4: Construir los reportes y/o visualizaciones correspondientes, con la finalidad de crear dashboard con 4 gráficosrepresentativos y predictivos
+de la información procesada en el proceso desde los orígenes de datos.
+Para lo anterior, deberá realizar lo siguiente:
+- Construir procesos de carga en data Lake, considerando disponibilidad de la información desde de la fuente
+- Construir procesos de transformación, limpieza de datos Batch.
+- Construir procesos orquestados considerando disponibilidad de información y dependencias de grandes volúmenes de datos en formato
+Batch.
+Para cada uno de estos pasos, debe considerar (si aplica) lo siguiente:
+- Control de errores: todos los procesos pueden tener puntos de fallo, de acuerdo con lo identificado en la etapa de diseño, debe
+implementar los controles de errores correspondientes.
+Subdirección de Diseño Instruccional
+Subdirección de Evaluación de Resultados de Aprendizaje
+2024 4
+- Control de duplicidad de archivos: Los DataLake contienen múltiples archivos, debe considerar que los procesos se pueden ejecutar
+múltiples veces, por tanto, sus procesos deben determinar qué hacer si un fichero y/o datos ya existen (tome la decisión de acuerdo con
+lo visto durante el semestre).
+- Registro de actividad: Como se señaló anteriormente, los procesos se podrían ejecutar varias veces, debe incorporar el control de
+ejecución (ej.: ¿si el proceso ya se ejecutó lo debo volver a ejecutar, lo debo bloquear o debo pedir autorización para volver a ejecutar?).
+- Validación de Datos y Procesos: Según corresponda, debe considerar en su construcción la validación de los procesos y la validación de
+los datos a trabajar, incluyendo procesos de transformación, manteniendo la trazabilidad de los datos desde el origen. Tenga en cuenta
+que al ser datos Batch, los procesos deben permitir reprocesar datos históricos en alguna fecha en particular.
+Dimensión presentación:
+ Para la presentación, deberán simular una entrega gerencial, evaluada individualmente.
+ Presentar la construcción del proceso de carga de datos (ingesta) en diferentes formatos y de diversas fuentes, ya sea batch o streaming.
+ Presentar la construcción de procesos con el fin de realizar limpieza, transformación y almacenamiento de grandes volúmenes de datos
+formato Batch.
+ Presenta los resultados siguiendo una estructura lógica, considerando la información del informe.
+ Deberá utilizar un lenguaje técnico propio de la disciplina, además de justificar y responder preguntas sobre cualquier aspecto trabajado.
+Se recomienda revisar la rúbrica de la evaluación para conocer detalladamente los aspectos a evaluar.
+
+Aunque esta evaluación se desarrolla en duplas, la calificación es de carácter individual y responde al desempeño particular de cada integrante.
+Subdirección de Diseño Instruccional
+Subdirección de Evaluación de Resultados de Aprendizaje
+2024 5
+Aspectos Formales
+o Producto/informe:
+- Subir a plataforma AVA
+- Formato .pdf con un máximo de 10 páginas, en fuentes Arial o Calibri, tamaño 10 a 12.
+- Portada con detalle de sección, nombre y rut de los integrantes.
+- Introducción
+- Índice.
+- Desarrollo: Todos los apartados del encargo.
+- Los trabajos entregados fuera de plazo serán calificados con nota 1.0.
+o Presentación:
+- Tiempo máximo de presentación 10 minutos, 5 minutos para responder preguntas.
+- Máximo 10 láminas, debe considerar los aspectos más importantes y que estas son solo apoyo. Se recomienda la utilización de
+plantillas interactivas, en las cuales se priorice la organización de información en diagramas, flujo de procesos, tablas consolidadas.
+- Las diapositivas o láminas deben ser formales. Se adjunta formato PowerPoint, se espera correcta ortografía, colores adecuados y
+diapositivas sintéticas, etc.
+- Distribución de tiempos y trabajo debe ser equivalente entre los integrantes del equipo.
+- Las preguntas pueden ser realizada a cualquier integrante del equipo
+Anexos
+En el caso del informe, puede agregar como anexo o punto final los recursos que considere necesarios.
+Subdirección de Diseño Instruccional
+Subdirección de Evaluación de Resultados de Aprendizaje
+2024 6
+3. Pauta de Evaluación
+Tipo de Pauta: Rúbrica
+
+Categoría % logro Descripción niveles de logro
+Muy buen desempeño 100% Demuestra un desempeño destacado, evidenciando el logro de todos los aspectos evaluados en el indicador.
+Buen desempeño 80% Demuestra un alto desempeño del indicador, presentando pequeñas omisiones, dificultades y/o errores.
+Desempeño aceptable 60% Demuestra un desempeño competente, evidenciando el logro de los elementos básicos del indicador, pero con
+omisiones, dificultades o errores.
+Desempeño incipiente 30% Presenta importantes omisiones, dificultades o errores en el desempeño, que no permiten evidenciar los
+elementos básicos del logro del indicador, por lo que no puede ser considerado competente.
+Desempeño no logrado 0% Presenta ausencia o incorrecto desempeño.
+
+Indicador de
+Evaluación
+Categorías de Respuesta Ponderación
+Indicador de
+Evaluación
+Muy buen desempeño
+100%
+Buen desempeño
+80%
+Desempeño aceptable
+60%
+Desempeño incipiente
+30%
+Desempeño no
+logrado
+0%
+Dimensión encargo
+1. Construye proceso
+de carga de datos
+Batch en diferentes
+formatos y de diversas
+fuentes.
+Construye procesos de
+carga de datos a partir de:
+- uso de diversos
+formatos.
+- uso de diferentes fuentes
+de datos
+- proceso de ingesta
+robusto
+- uso de herramientas
+como ETL
+- sistemas de colas,
+servicios de integración en
+la nube
+- desarrollo de código
+propio
+Construye procesos de
+carga de datos
+considerando entre cinco
+o seis aspectos:
+Los cuales se identifican
+claramente en su proyecto,
+asegurando el éxito de
+este.
+Construye procesos de
+carga de datos
+considerando entre tres
+o cuatro:
+Los cuales se identifican
+claramente en su
+proyecto, asegurando el
+éxito de este.
+Construye procesos de
+carga de datos
+considerando entre uno o
+dos:
+Los cuales se identifican
+claramente en su proyecto,
+asegurando el éxito de
+este.
+No considera los
+aspectos
+mencionados o
+no se identifica
+ninguno
+claramente en
+su proyecto.
+5%
+Subdirección de Diseño Instruccional
+Subdirección de Evaluación de Resultados de Aprendizaje
+2024 7
+-gestión de errores.
+Los cuales se identifican
+claramente en su proyecto,
+asegurando el éxito de
+este.
+2. Almacena la
+información para
+realizar procesos de
+limpieza y
+transformación de
+datos.
+Almacena la información
+en su totalidad para
+realizar procesos de
+limpieza y transformación
+de datos.
+Almacena el 80% de la
+información para realizar
+procesos de limpieza y
+transformación de datos.
+Almacena 60% y de la
+información para
+realizar procesos de
+limpieza y
+transformación de
+datos.
+Almacena el 30% de la
+información para realizar
+procesos de limpieza y
+transformación de datos.
+No almacena
+información o es
+insuficiente.
+5%
+3. Construye procesos
+de limpieza,
+transformación y
+almacenamiento de
+grandes volúmenes de
+datos.
+Construye procesos de
+limpieza y transformación
+que consideren cuatro
+aspectos como:
+normalización,
+agregación,
+enriquecimiento,
+validación, limpieza y de
+duplicación. Los cuales
+aseguran una carga exitosa
+y completa de los datos
+desde las fuentes de
+origen.
+Construye procesos de
+limpieza y transformación
+que consideren solo tres
+de los aspectos
+mencionados. Los cuales
+aseguran una carga exitosa
+y completa de los datos
+desde las fuentes de
+origen.
+Construye procesos de
+limpieza y
+transformación que
+consideren solo dos de
+los aspectos
+mencionados. Los cuales
+aseguran una carga
+exitosa y completa de los
+datos desde las fuentes
+de origen.
+Construye procesos de
+limpieza y transformación
+que consideren solo uno
+de los aspectos
+mencionados. El cual
+asegura una carga exitosa y
+completa de los datos
+desde las fuentes de
+origen.
+No construye
+estos procesos.
+5%
+4. Construye gráficos
+que permitan mostrar
+de manera simple los
+insight relevantes
+encontrados en los
+datos.
+Construye
+completamente 4 gráficos
+(dimensiones) que
+permitan mostrar de
+manera simple los insight
+relevantes encontrados en
+los datos.
+Construye completamente
+3 gráficos (dimensiones)
+que permitan mostrar de
+manera simple los insight
+relevantes encontrados en
+los datos.
+Construye
+completamente 2
+gráficos (dimensiones)
+que permitan mostrar
+de manera simple los
+insight relevantes
+encontrados en los
+datos.
+Construye 1 gráfico
+(dimensiones) que
+permitan mostrar de
+manera simple los insight
+relevantes encontrados en
+los datos.
+No construye
+gráficos.
+15%
+Porcentaje dimensión encargo 30%
+Dimensión presentación
+1. Demuestra dominio
+sobre la construcción
+del proceso de carga
+de datos Batch en
+Demuestra un dominio
+completo y profundo
+sobre la construcción del
+proceso de carga de datos
+Batch en diferentes
+Demuestra dominio sobre
+la construcción del
+proceso de carga de datos
+Batch en diferentes
+formatos y de diversas
+Demuestra dominio
+sobre la construcción
+del proceso de carga de
+datos Batch en
+diferentes formatos y de
+Demuestra dominio del
+tema, aunque con errores
+relevantes sobre la
+construcción del proceso
+de carga de datos Batch
+No demuestra
+conocimiento
+sobre la
+construcción del
+proceso de
+15%
+Subdirección de Diseño Instruccional
+Subdirección de Evaluación de Resultados de Aprendizaje
+2024 8
+diferentes formatos y
+de diversas fuentes,
+fundamentando con
+argumentos
+coherentes y propios
+de la disciplina.
+formatos y de diversas
+fuentes. Presenta
+argumentos coherentes,
+detallados y bien
+fundamentados,
+utilizando terminología
+adecuada y ejemplos
+relevantes de la disciplina.
+fuentes, aunque faltan
+algunos detalles o
+ejemplos específicos de la
+disciplina.
+diversas fuentes, pero
+presenta argumentos
+superficiales o
+parcialmente
+desarrollados, además
+faltan algunos detalles o
+ejemplos específicos de
+la disciplina.
+en diferentes formatos y
+de diversas fuentes.
+Además, presenta
+argumentos superficiales o
+parcialmente
+desarrollados, y faltan
+algunos detalles o
+ejemplos específicos de la
+disciplina.
+carga de datos
+Batch en
+diferentes
+formatos y de
+diversas
+fuentes, con uso
+inadecuado de
+terminología.
+2. Demuestra dominio
+sobre el
+almacenamiento de
+información para
+realizar procesos de
+limpieza y
+transformación de
+datos,
+fundamentando con
+argumentos
+coherentes y propios
+de la disciplina.
+Demuestra un dominio
+completo y profundo
+sobre el almacenamiento
+de información para
+realizar procesos de
+limpieza y transformación
+de datos. Presenta
+argumentos coherentes,
+detallados y bien
+fundamentados,
+utilizando terminología
+adecuada y ejemplos
+relevantes de la disciplina.
+Demuestra dominio sobre
+el almacenamiento de
+información para realizar
+procesos de limpieza y
+transformación de datos,
+aunque faltan algunos
+detalles o ejemplos
+específicos de la disciplina.
+Demuestra dominio
+sobre la construcción
+del proceso de carga de
+datos en diferentes
+formatos y de diversas
+fuentes, pero presenta
+argumentos superficiales
+o parcialmente
+desarrollados, además
+faltan algunos detalles o
+ejemplos específicos de
+la disciplina.
+Demuestra dominio del
+tema, aunque con errores
+relevantes sobre la
+construcción del proceso
+de carga de datos en
+diferentes formatos y de
+diversas fuentes, Además,
+presenta argumentos
+superficiales o
+parcialmente
+desarrollados, y faltan
+algunos detalles o
+ejemplos específicos de la
+disciplina.
+No demuestra
+dominio sobre el
+almacenamient
+o de
+información
+para realizar
+procesos de
+limpieza y
+transformación
+de datos, con
+uso inadecuado
+de terminología.
+15%
+3. Demuestra dominio
+sobre la construcción
+de procesos de
+limpieza,
+transformación y
+almacenamiento de
+grandes volúmenes de
+datos,
+fundamentando con
+argumentos
+coherentes y propios
+de la disciplina.
+
+Demuestra un dominio
+completo y profundo
+sobre la construcción de
+procesos de limpieza,
+transformación y
+almacenamiento de
+grandes volúmenes de
+datos. Presenta
+argumentos coherentes,
+detallados y bien
+fundamentados,
+utilizando terminología
+adecuada y ejemplos
+relevantes de la disciplina.
+Demuestra dominio sobre
+la construcción de
+procesos de limpieza,
+transformación y
+almacenamiento de
+grandes volúmenes de
+datos, aunque faltan
+algunos detalles o
+ejemplos específicos de la
+disciplina.
+Demuestra dominio
+sobre la construcción de
+procesos de limpieza,
+transformación y
+almacenamiento de
+grandes volúmenes de
+datos, pero presenta
+argumentos superficiales
+o parcialmente
+desarrollados, además
+faltan algunos detalles o
+ejemplos específicos de
+la disciplina.
+Demuestra dominio del
+tema, aunque con errores
+relevantes sobre la
+construcción de procesos
+de limpieza,
+transformación y
+almacenamiento de
+grandes volúmenes de
+datos. Además, presenta
+argumentos superficiales o
+parcialmente
+desarrollados, y faltan
+algunos detalles o
+ejemplos específicos de la
+disciplina.
+No demuestra
+conocimiento
+sobre la
+construcción de
+procesos con el
+fin de realizar
+limpieza,
+transformación
+y
+almacenamient
+o de grandes
+volúmenes de
+datos, con uso
+inadecuado de
+terminología.
+15%
+4. Demuestra dominio
+en la construcción de
+los gráficos que
+muestran de manera
+Demuestra un dominio
+completo y profundo
+sobre la construcción de
+los gráficos que muestran
+Demuestra dominio sobre
+la construcción de los
+gráficos que muestran de
+manera simple los insight
+Demuestra dominio
+sobre la construcción de
+los gráficos que
+muestran de manera
+Demuestra dominio del
+tema, aunque con errores
+relevantes sobre la
+construcción de los
+No demuestra
+conocimiento
+sobre la
+construcción de
+25%
+Subdirección de Diseño Instruccional
+Subdirección de Evaluación de Resultados de Aprendizaje
+2024 9
+simple los insight
+relevantes
+encontrados en los
+datos,
+fundamentando con
+argumentos
+coherentes y propios
+de la disciplina.
+de manera simple los
+insight relevantes
+encontrados en los datos.
+Presenta argumentos
+coherentes, detallados y
+bien fundamentados,
+utilizando terminología
+adecuada y ejemplos
+relevantes de la disciplina.
+relevantes encontrados en
+los datos, aunque faltan
+algunos detalles o
+ejemplos específicos de la
+disciplina.
+simple los insight
+relevantes encontrados
+en los datos, pero
+presenta argumentos
+superficiales o
+parcialmente
+desarrollados, además
+faltan algunos detalles o
+ejemplos específicos de
+la disciplina.
+gráficos que muestran de
+manera simple los insight
+relevantes encontrados en
+los datos. Además,
+presenta argumentos
+superficiales o
+parcialmente
+desarrollados, y faltan
+algunos detalles o
+ejemplos específicos de la
+disciplina.
+los gráficos que
+muestran de
+manera simple
+los insight
+relevantes
+encontrados en
+los datos con
+uso inadecuado
+de terminología.
+Porcentaje dimensión presentación 70%
+Total 100%
+ 

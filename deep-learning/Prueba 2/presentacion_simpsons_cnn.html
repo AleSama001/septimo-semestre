@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasificación CNN - Los Simpson | Deep Learning</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --simpson-yellow: #FFD700;
+            --simpson-blue: #4A90E2;
+            --simpson-orange: #FF8C00;
+            --simpson-green: #32CD32;
+            --simpson-red: #FF4444;
+            --simpson-purple: #8A2BE2;
+            --simpson-dark: #2C3E50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, var(--simpson-blue), var(--simpson-yellow));
+            /* Removido: overflow: hidden; */
+            min-height: 100vh;
+        }
+
+        .slide {
+            display: none;
+            min-height: 100vh; /* Cambiado de height a min-height */
+            width: 100vw;
+            position: relative;
+            padding: 2rem;
+            padding-bottom: 100px; /* Espacio para la navegación */
+            background: linear-gradient(135deg, #87CEEB 0%, #FFD700 50%, #98FB98 100%);
+            animation: fadeIn 0.8s ease-in-out;
+            overflow-y: auto; /* Agregado para permitir scroll vertical */
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Cambiado de center a flex-start */
+            align-items: center;
+            padding-top: 120px; /* Espacio para el logo y contador */
+        }
+
+        .slide-content {
+            max-width: 90%;
+            /* Removido: max-height: 85%; */
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 4px solid var(--simpson-yellow);
+            margin-bottom: 2rem; /* Agregado espacio inferior */
+        }
+
+        .title-slide {
+            background: linear-gradient(45deg, var(--simpson-yellow), var(--simpson-orange));
+            color: var(--simpson-dark);
+        }
+
+        .title-slide h1 {
+            font-family: 'Creepster', cursive;
+            font-size: 3.5rem;
+            text-shadow: 3px 3px 0px var(--simpson-blue);
+            margin-bottom: 1rem;
+        }
+
+        .slide h2 {
+            color: var(--simpson-dark);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 0px var(--simpson-yellow);
+        }
+
+        .slide h3 {
+            color: var(--simpson-blue);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--simpson-dark);
+            margin-bottom: 1rem;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .navigation.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .nav-btn {
+            background: var(--simpson-yellow);
+            border: 3px solid var(--simpson-blue);
+            color: var(--simpson-dark);
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: var(--simpson-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 215, 0, 0.9);
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            color: var(--simpson-dark);
+            border: 2px solid var(--simpson-blue);
+        }
+
+        .logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 80px;
+            height: auto;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--simpson-yellow), var(--simpson-orange));
+            padding: 1rem;
+            border-radius: 15px;
+            border: 2px solid var(--simpson-blue);
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--simpson-dark);
+        }
+
+        .architecture-list {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .architecture-list li {
+            background: rgba(255, 215, 0, 0.3);
+            margin: 0.5rem 0;
+            padding: 0.8rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--simpson-blue);
+        }
+
+        .comparison-table {
+            width: 100%;
+            max-width: 1000px;
+            margin: 1rem auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .comparison-table th {
+            background: var(--simpson-yellow);
+            color: var(--simpson-dark);
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, var(--simpson-yellow), var(--simpson-orange));
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        .student-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .student-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 15px;
+            border: 3px solid var(--simpson-blue);
+            margin: 0.5rem;
+            min-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .slide h2 { font-size: 2rem; }
+            .slide h3 { font-size: 1.5rem; }
+            .slide p, .slide li { font-size: 1rem; }
+            .title-slide h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo DuocUC -->
+    <img src="https://www.duoc.cl/wp-content/themes/wordpress-duoc-cl/images/logo-duoc.svg" alt="DuocUC Logo" class="logo">
+    
+    <!-- Contador de diapositivas -->
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">20</span>
+    </div>
+
+    <!-- Slide 1: Portada -->
+    <section class="slide active title-slide">
+        <div class="slide-content">
+            <h1><i class="fas fa-tv"></i> Clasificación CNN</h1>
+            <h2>Personajes de Los Simpson</h2>
+            <div class="student-info">
+                <div class="student-card">
+                    <h4><i class="fas fa-user"></i> Alexander Seydewitz</h4>
+                </div>
+                <div class="student-card">
+                    <h4><i class="fas fa-user"></i> Italo Brignardello</h4>
+                </div>
+                <div class="student-card">
+                    <h4><i class="fas fa-user"></i> Patricio Quintanilla</h4>
+                </div>
+            </div>
+            <h3><i class="fas fa-brain"></i> Deep Learning - DLY0100</h3>
+            <p><i class="fas fa-calendar"></i> Evaluación Parcial N° 2</p>
+            <img src="https://placehold.co/300x200/FFD700/2C3E50?text=Los+Simpson+CNN" alt="Simpson CNN" style="margin-top: 1rem; border-radius: 15px;">
+        </div>
+    </section>
+
+    <!-- Slide 2: Introducción al Problema -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-bullseye"></i> Introducción al Problema</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Objetivo Principal</h3>
+                    <p>Implementar y optimizar redes neuronales convolucionales (CNN) para la clasificación automática de personajes de Los Simpson.</p>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-users"></i> <strong>18 personajes</strong> diferentes de Springfield</li>
+                        <li><i class="fas fa-image"></i> Imágenes de <strong>64x64 píxeles</strong></li>
+                        <li><i class="fas fa-database"></i> <strong>18,992</strong> imágenes de entrenamiento</li>
+                        <li><i class="fas fa-vial"></i> <strong>890</strong> imágenes de prueba</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <img src="https://placehold.co/400x300/87CEEB/2C3E50?text=Springfield+Characters" alt="Personajes" style="width: 100%; border-radius: 15px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 3: Dataset y Preprocesamiento -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-database"></i> Dataset y Preprocesamiento</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">18,992</div>
+                    <div>Imágenes Entrenamiento</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">890</div>
+                    <div>Imágenes Prueba</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">64x64</div>
+                    <div>Resolución</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">18</div>
+                    <div>Clases</div>
+                </div>
+            </div>
+            <h3>Técnicas de Preprocesamiento</h3>
+            <ul class="architecture-list">
+                <li><i class="fas fa-sync-alt"></i> <strong>Data Augmentation:</strong> Rotación, flip horizontal, cambios de color</li>
+                <li><i class="fas fa-balance-scale"></i> <strong>Normalización:</strong> División por 255 para valores [0,1]</li>
+                <li><i class="fas fa-random"></i> <strong>Mezclado aleatorio</strong> de datos</li>
+                <li><i class="fas fa-cut"></i> <strong>División:</strong> 80% entrenamiento, 20% validación</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Slide 4: Arquitecturas Implementadas -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-sitemap"></i> Arquitecturas CNN Implementadas</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Modelos Evaluados</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-home"></i> <strong>CNN Básica:</strong> 4 capas convolucionales</li>
+                        <li><i class="fas fa-brain"></i> <strong>AlexNet-Like:</strong> Arquitectura clásica</li>
+                        <li><i class="fas fa-building"></i> <strong>VGG-Like:</strong> Capas profundas</li>
+                        <li><i class="fas fa-mobile-alt"></i> <strong>MobileNet-Like:</strong> Eficiencia computacional</li>
+                        <li><i class="fas fa-tree"></i> <strong>DenseNet-Like:</strong> Conexiones densas</li>
+                        <li><i class="fas fa-bolt"></i> <strong>EfficientNet-Like:</strong> Optimización moderna</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <img src="https://placehold.co/400x300/98FB98/2C3E50?text=CNN+Architectures" alt="Arquitecturas CNN" style="width: 100%; border-radius: 15px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: CNN Básica - Arquitectura -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-home"></i> CNN Básica - Arquitectura</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <h3>Configuración de Capas</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-layer-group"></i> <strong>Conv1:</strong> 32 filtros, 3x3, BatchNorm, MaxPool</li>
+                        <li><i class="fas fa-layer-group"></i> <strong>Conv2:</strong> 64 filtros, 3x3, BatchNorm, MaxPool</li>
+                        <li><i class="fas fa-layer-group"></i> <strong>Conv3:</strong> 128 filtros, 3x3, BatchNorm, MaxPool</li>
+                        <li><i class="fas fa-layer-group"></i> <strong>Conv4:</strong> 256 filtros, 3x3, BatchNorm, MaxPool</li>
+                        <li><i class="fas fa-project-diagram"></i> <strong>FC1:</strong> 512 neuronas + Dropout(0.5)</li>
+                        <li><i class="fas fa-project-diagram"></i> <strong>FC2:</strong> 18 neuronas (salida)</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <div class="metric-card">
+                        <div class="metric-value">2.5M</div>
+                        <div>Parámetros</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">9.52 MB</div>
+                        <div>Tamaño</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 6: Técnicas de Optimización -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-cogs"></i> Técnicas de Optimización</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Regularización</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-shield-alt"></i> <strong>Batch Normalization:</strong> Estabiliza entrenamiento</li>
+                        <li><i class="fas fa-random"></i> <strong>Dropout (0.5):</strong> Previene overfitting</li>
+                        <li><i class="fas fa-weight"></i> <strong>Weight Decay:</strong> Regularización L2</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3>Optimización</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-rocket"></i> <strong>Adam Optimizer:</strong> lr=0.001</li>
+                        <li><i class="fas fa-chart-line"></i> <strong>CrossEntropyLoss:</strong> Función de pérdida</li>
+                        <li><i class="fas fa-clock"></i> <strong>Learning Rate Scheduling:</strong> Ajuste dinámico</li>
+                    </ul>
+                </div>
+            </div>
+            <img src="https://placehold.co/600x200/FFD700/2C3E50?text=Optimization+Techniques" alt="Técnicas de Optimización" style="width: 80%; margin-top: 1rem; border-radius: 15px;">
+        </div>
+    </section>
+
+    <!-- Slide 7: Proceso de Entrenamiento -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-dumbbell"></i> Proceso de Entrenamiento</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Configuración</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-repeat"></i> <strong>Épocas:</strong> 15 para modelo principal, 8 para comparación</li>
+                        <li><i class="fas fa-layer-group"></i> <strong>Batch Size:</strong> 32</li>
+                        <li><i class="fas fa-microchip"></i> <strong>Dispositivo:</strong> CUDA (GPU)</li>
+                        <li><i class="fas fa-tachometer-alt"></i> <strong>Validación:</strong> Cada época</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3>Métricas Monitoreadas</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-chart-line"></i> <strong>Loss:</strong> Entrenamiento y validación</li>
+                        <li><i class="fas fa-bullseye"></i> <strong>Accuracy:</strong> Precisión del modelo</li>
+                        <li><i class="fas fa-clock"></i> <strong>Learning Rate:</strong> Tasa de aprendizaje</li>
+                        <li><i class="fas fa-stopwatch"></i> <strong>Tiempo:</strong> Por época y total</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 8: Resultados del Modelo Principal -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-trophy"></i> Resultados del Modelo Principal</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">86.63%</div>
+                    <div>Precisión Final</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">15</div>
+                    <div>Épocas</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">771/890</div>
+                    <div>Predicciones Correctas</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">82.31%</div>
+                    <div>Acc. Entrenamiento</div>
+                </div>
+            </div>
+            <h3>Evolución del Entrenamiento</h3>
+            <p>El modelo mostró una <span class="highlight">mejora constante</span> desde 16.27% en la primera época hasta 82.31% en entrenamiento y 88.23% en validación.</p>
+            <img src="https://placehold.co/600x300/87CEEB/2C3E50?text=Training+Curves" alt="Curvas de Entrenamiento" style="width: 70%; margin-top: 1rem; border-radius: 15px;">
+        </div>
+    </section>
+
+    <!-- Slide 9: Comparación de Arquitecturas -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-balance-scale"></i> Comparación de Arquitecturas</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                                                <th>Precisión (%)</th>
+                        <th>Parámetros</th>
+                        <th>Tamaño (MB)</th>
+                        <th>Ranking</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: #FFD700;">
+                        <td><i class="fas fa-tree"></i> <strong>DenseNet-Like</strong></td>
+                        <td><strong>86.52%</strong></td>
+                        <td>6,972,306</td>
+                        <td>26.60</td>
+                        <td>🥇 1°</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-mobile-alt"></i> MobileNet-Like</td>
+                        <td>77.19%</td>
+                        <td>3,225,426</td>
+                        <td>12.30</td>
+                        <td>🥈 2°</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-home"></i> CNN Básica</td>
+                        <td>75.84%</td>
+                        <td>2,496,274</td>
+                        <td>9.52</td>
+                        <td>🥉 3°</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-bolt"></i> EfficientNet-Like</td>
+                        <td>70.34%</td>
+                        <td>2,646,130</td>
+                        <td>10.09</td>
+                        <td>4°</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-building"></i> VGG-Like</td>
+                        <td>60.90%</td>
+                        <td>45,412,946</td>
+                        <td>173.24</td>
+                        <td>5°</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-brain"></i> AlexNet</td>
+                        <td>5.62%</td>
+                        <td>57,077,586</td>
+                        <td>217.73</td>
+                        <td>6°</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Slide 10: Modelo Campeón - DenseNet-Like -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-crown"></i> Modelo Campeón: DenseNet-Like</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Características Clave</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-link"></i> <strong>Conexiones Densas:</strong> Cada capa conectada a todas las anteriores</li>
+                        <li><i class="fas fa-recycle"></i> <strong>Reutilización de Features:</strong> Mejor flujo de gradientes</li>
+                        <li><i class="fas fa-compress"></i> <strong>Transition Layers:</strong> Reducción de dimensionalidad</li>
+                        <li><i class="fas fa-chart-line"></i> <strong>Growth Rate:</strong> Control del crecimiento de canales</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">86.52%</div>
+                            <div>Precisión</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">87.44%</div>
+                            <div>F1-Score</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">3.25</div>
+                            <div>Eficiencia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p><span class="highlight">¿Por qué ganó?</span> Combina eficiencia en parámetros con alta precisión, aprovechando las conexiones densas para mejor aprendizaje de características.</p>
+        </div>
+    </section>
+
+    <!-- Slide 11: Análisis de Métricas -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-chart-bar"></i> Análisis Detallado de Métricas</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Métricas del Modelo Campeón</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-bullseye"></i> <strong>Accuracy:</strong> 86.52%</li>
+                        <li><i class="fas fa-balance-scale"></i> <strong>Precision Macro:</strong> 88.35%</li>
+                        <li><i class="fas fa-search"></i> <strong>Recall Macro:</strong> 86.54%</li>
+                        <li><i class="fas fa-medal"></i> <strong>F1-Score Macro:</strong> 87.44%</li>
+                        <li><i class="fas fa-weight"></i> <strong>F1-Score Weighted:</strong> 87.44%</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3>Personajes Mejor Clasificados</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-star"></i> <strong>Sideshow:</strong> F1: 93.9%</li>
+                        <li><i class="fas fa-star"></i> <strong>Apu:</strong> F1: 93.6%</li>
+                        <li><i class="fas fa-star"></i> <strong>Krusty:</strong> F1: 93.3%</li>
+                        <li><i class="fas fa-star"></i> <strong>Kent:</strong> F1: 92.9%</li>
+                    </ul>
+                </div>
+            </div>
+            <img src="https://placehold.co/600x250/98FB98/2C3E50?text=Metrics+Analysis" alt="Análisis de Métricas" style="width: 70%; margin-top: 1rem; border-radius: 15px;">
+        </div>
+    </section>
+
+    <!-- Slide 12: Análisis de Errores -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-exclamation-triangle"></i> Análisis de Errores</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Personajes Más Difíciles</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-times"></i> <strong>Milhouse:</strong> F1: 78.0% - Confundido con otros niños</li>
+                        <li><i class="fas fa-times"></i> <strong>Nelson:</strong> F1: 78.2% - Similar a Bart</li>
+                        <li><i class="fas fa-times"></i> <strong>Bart:</strong> F1: 80.0% - Confundido con Lisa</li>
+                        <li><i class="fas fa-times"></i> <strong>Comic Guy:</strong> F1: 82.8% - Características menos distintivas</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3>Principales Confusiones</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-exchange-alt"></i> <strong>Abraham → Homer:</strong> 18.8%</li>
+                        <li><i class="fas fa-exchange-alt"></i> <strong>Edna → Charles:</strong> 14.0%</li>
+                        <li><i class="fas fa-exchange-alt"></i> <strong>Marge → Milhouse:</strong> 12.0%</li>
+                        <li><i class="fas fa-exchange-alt"></i> <strong>Chief → Milhouse:</strong> 10.0%</li>
+                    </ul>
+                </div>
+            </div>
+            <p><span class="highlight">Insight:</span> Los personajes con características físicas similares (especialmente los niños) tienden a confundirse más entre sí.</p>
+        </div>
+    </section>
+
+    <!-- Slide 13: Hiperparámetros y Configuración -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-sliders-h"></i> Hiperparámetros y Configuración</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Configuración Óptima</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-graduation-cap"></i> <strong>Learning Rate:</strong> 0.001 (Adam)</li>
+                        <li><i class="fas fa-layer-group"></i> <strong>Batch Size:</strong> 32</li>
+                        <li><i class="fas fa-random"></i> <strong>Dropout:</strong> 0.5</li>
+                        <li><i class="fas fa-weight"></i> <strong>Weight Decay:</strong> Regularización L2</li>
+                        <li><i class="fas fa-sync-alt"></i> <strong>Data Augmentation:</strong> Rotación ±15°, Flip horizontal</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3>Justificación Técnica</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-check"></i> <strong>Adam:</strong> Convergencia más estable</li>
+                        <li><i class="fas fa-check"></i> <strong>Batch 32:</strong> Balance memoria/gradiente</li>
+                        <li><i class="fas fa-check"></i> <strong>Dropout 0.5:</strong> Previene overfitting efectivamente</li>
+                        <li><i class="fas fa-check"></i> <strong>Augmentation:</strong> Mejora generalización</li>
+                    </ul>
+                </div>
+            </div>
+            <img src="https://placehold.co/600x200/FFD700/2C3E50?text=Hyperparameter+Tuning" alt="Ajuste de Hiperparámetros" style="width: 70%; margin-top: 1rem; border-radius: 15px;">
+        </div>
+    </section>
+
+    <!-- Slide 14: Técnicas Avanzadas Implementadas -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-rocket"></i> Técnicas Avanzadas Implementadas</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Arquitecturas Modernas</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-compress-arrows-alt"></i> <strong>Squeeze-and-Excitation:</strong> Atención en canales</li>
+                        <li><i class="fas fa-layer-group"></i> <strong>Depthwise Separable Conv:</strong> Eficiencia computacional</li>
+                        <li><i class="fas fa-link"></i> <strong>Residual Connections:</strong> Mejor flujo de gradientes</li>
+                        <li><i class="fas fa-globe"></i> <strong>Global Average Pooling:</strong> Reducción de parámetros</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3>Regularización Avanzada</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-chart-line"></i> <strong>Batch Normalization:</strong> Estabilización</li>
+                        <li><i class="fas fa-random"></i> <strong>Dropout Adaptativo:</strong> Diferentes tasas por capa</li>
+                        <li><i class="fas fa-clock"></i> <strong>Learning Rate Scheduling:</strong> Ajuste dinámico</li>
+                        <li><i class="fas fa-sync-alt"></i> <strong>Data Augmentation:</strong> Transformaciones múltiples</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 15: Visualización de Filtros y Activaciones -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-eye"></i> Visualización de Filtros y Activaciones</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Análisis de Filtros Convolucionales</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-filter"></i> <strong>Capa Conv1:</strong> Detectores de bordes y texturas básicas</li>
+                        <li><i class="fas fa-shapes"></i> <strong>Capas Medias:</strong> Formas y patrones complejos</li>
+                        <li><i class="fas fa-user"></i> <strong>Capas Profundas:</strong> Características específicas de personajes</li>
+                    </ul>
+                    <img src="https://placehold.co/300x200/87CEEB/2C3E50?text=Conv+Filters" alt="Filtros Convolucionales" style="width: 100%; border-radius: 15px;">
+                </div>
+                <div class="col-md-6">
+                    <h3>Mapas de Activación</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-brain"></i> <strong>Feature Maps:</strong> Qué ve cada capa</li>
+                        <li><i class="fas fa-highlight"></i> <strong>Activaciones:</strong> Regiones importantes</li>
+                        <li><i class="fas fa-search"></i> <strong>Atención:</strong> Foco en características distintivas</li>
+                    </ul>
+                    <img src="https://placehold.co/300x200/98FB98/2C3E50?text=Activation+Maps" alt="Mapas de Activación" style="width: 100%; border-radius: 15px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 16: Eficiencia Computacional -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-tachometer-alt"></i> Eficiencia Computacional</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">CUDA</div>
+                    <div>Dispositivo</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">GTX 1660 Ti</div>
+                    <div>GPU</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">6.0 GB</div>
+                    <div>Memoria GPU</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">~30s</div>
+                    <div>Tiempo/Época</div>
+                </div>
+            </div>
+            <h3>Análisis de Eficiencia</h3>
+            <ul class="architecture-list">
+                <li><i class="fas fa-medal"></i> <strong>Modelo más eficiente:</strong> DenseNet-Like (Eficiencia: 3.25)</li>
+                <li><i class="fas fa-balance-scale"></i> <strong>Mejor balance:</strong> MobileNet-Like (77.19% con 12.3 MB)</li>
+                <li><i class="fas fa-times"></i> <strong>Menos eficiente:</strong> AlexNet (5.62% con 217.7 MB)</li>
+                <li><i class="fas fa-chart-line"></i> <strong>Correlación:</strong> Más parámetros ≠ Mejor rendimiento</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Slide 17: Conclusiones y Aprendizajes -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-lightbulb"></i> Conclusiones y Aprendizajes</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Insights Técnicos</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-check"></i> <strong>Arquitecturas profundas</strong> superan a las simples</li>
+                        <li><i class="fas fa-check"></i> <strong>Conexiones densas</strong> mejoran el flujo de gradientes</li>
+                        <li><i class="fas fa-check"></i> <strong>Data Augmentation</strong> es crucial para generalización</li>
+                        <li><i class="fas fa-check"></i> <strong>Batch Normalization</strong> acelera convergencia</li>
+                        <li><i class="fas fa-check"></i> <strong>Dropout</strong> previene overfitting efectivamente</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3>Observaciones del Dataset</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-user-friends"></i> Personajes distintivos son <strong>más fáciles</strong> de clasificar</li>
+                        <li><i class="fas fa-child"></i> <strong>Niños</strong> se confunden entre sí frecuentemente</li>
+                        <li><i class="fas fa-palette"></i> <strong>Colores característicos</strong> ayudan en clasificación</li>
+                        <li><i class="fas fa-eye"></i> <strong>Características faciales</strong> son determinantes</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="text-center"><span class="highlight">Resultado Final:</span> 86.52% de precisión con DenseNet-Like demuestra la efectividad de arquitecturas modernas en problemas de clasificación de imágenes.</p>
+        </div>
+    </section>
+
+    <!-- Slide 18: Mejoras Futuras -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-arrow-up"></i> Mejoras Futuras y Recomendaciones</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Mejoras Técnicas</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-download"></i> <strong>Transfer Learning:</strong> Modelos pre-entrenados en ImageNet</li>
+                        <li><i class="fas fa-expand"></i> <strong>Mayor resolución:</strong> 224x224 o 256x256 píxeles</li>
+                        <li><i class="fas fa-layer-group"></i> <strong>Ensemble Methods:</strong> Combinación de múltiples modelos</li>
+                        <li><i class="fas fa-robot"></i> <strong>Vision Transformers:</strong> Arquitecturas de atención</li>
+                        <li><i class="fas fa-compress"></i> <strong>Optimización:</strong> Quantización y pruning</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3>Mejoras de Dataset</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-balance-scale"></i> <strong>Balanceado de clases:</strong> Igual número de muestras</li>
+                        <li><i class="fas fa-magic"></i> <strong>Augmentation avanzado:</strong> Mixup, CutMix</li>
+                        <li><i class="fas fa-tags"></i> <strong>Label Smoothing:</strong> Regularización de etiquetas</li>
+                        <li><i class="fas fa-database"></i> <strong>Más datos:</strong> Expansión del dataset</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center">
+                <img src="https://placehold.co/500x200/FFD700/2C3E50?text=Future+Improvements" alt="Mejoras Futuras" style="border-radius: 15px;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 19: Impacto y Aplicaciones -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2><i class="fas fa-globe"></i> Impacto y Aplicaciones</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Aplicaciones Prácticas</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-tv"></i> <strong>Entretenimiento:</strong> Clasificación automática en streaming</li>
+                        <li><i class="fas fa-gamepad"></i> <strong>Gaming:</strong> Reconocimiento de personajes en videojuegos</li>
+                        <li><i class="fas fa-mobile-alt"></i> <strong>Apps móviles:</strong> Filtros y efectos de realidad aumentada</li>
+                        <li><i class="fas fa-search"></i> <strong>Búsqueda:</strong> Indexación automática de contenido</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3>Valor Educativo</h3>
+                    <ul class="architecture-list">
+                        <li><i class="fas fa-graduation-cap"></i> <strong>Aprendizaje:</strong> Comprensión práctica de CNNs</li>
+                        <li><i class="fas fa-chart-bar"></i> <strong>Comparación:</strong> Análisis de diferentes arquitecturas</li>
+                                                <li><i class="fas fa-cogs"></i> <strong>Optimización:</strong> Ajuste de hiperparámetros</li>
+                        <li><i class="fas fa-eye"></i> <strong>Interpretabilidad:</strong> Visualización de características aprendidas</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center">
+                <p><span class="highlight">Transferibilidad:</span> Las técnicas aprendidas son aplicables a cualquier problema de clasificación de imágenes.</p>
+                <img src="https://placehold.co/600x250/87CEEB/2C3E50?text=Real+World+Applications" alt="Aplicaciones del Mundo Real" style="border-radius: 15px; margin-top: 1rem;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 20: Contraportada -->
+    <section class="slide title-slide">
+        <div class="slide-content">
+            <h1><i class="fas fa-check-circle"></i> ¡Proyecto Completado!</h1>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">🥇</div>
+                    <div>DenseNet-Like Campeón</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">86.52%</div>
+                    <div>Precisión Máxima</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">6</div>
+                    <div>Arquitecturas Comparadas</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">18</div>
+                    <div>Personajes Clasificados</div>
+                </div>
+            </div>
+            
+            <h2><i class="fas fa-users"></i> Equipo de Desarrollo</h2>
+            <div class="student-info">
+                <div class="student-card">
+                    <h4><i class="fas fa-user-graduate"></i> Alexander Seydewitz</h4>
+                </div>
+                <div class="student-card">
+                    <h4><i class="fas fa-user-graduate"></i> Italo Brignardello</h4>
+                </div>
+                <div class="student-card">
+                    <h4><i class="fas fa-user-graduate"></i> Patricio Quintanilla</h4>
+                </div>
+            </div>
+            
+            <h3><i class="fas fa-university"></i> DuocUC - Deep Learning</h3>
+            <p><i class="fas fa-calendar"></i> Evaluación Parcial N° 2 - 2025</p>
+            
+            <div class="text-center mt-4">
+                <h4><i class="fas fa-quote-left"></i> "D'oh! ¡Excelente trabajo clasificando a Springfield!" <i class="fas fa-quote-right"></i></h4>
+                <img src="https://placehold.co/400x200/FFD700/2C3E50?text=Thank+You+Springfield!" alt="Gracias Springfield" style="border-radius: 15px; margin-top: 1rem;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Navegación -->
+    <div class="navigation" id="navigation">
+        <button class="nav-btn" onclick="previousSlide()">
+            <i class="fas fa-chevron-left"></i> Anterior
+        </button>
+        <button class="nav-btn" onclick="nextSlide()">
+            Siguiente <i class="fas fa-chevron-right"></i>
+        </button>
+        <button class="nav-btn" onclick="toggleFullscreen()">
+            <i class="fas fa-expand"></i> Pantalla Completa
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let hideTimeout;
+
+        // Actualizar contador de diapositivas
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // Mostrar navegación temporalmente
+            showNavigation();
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        function showNavigation() {
+            const nav = document.getElementById('navigation');
+            nav.classList.remove('hidden');
+            
+            // Limpiar timeout anterior
+            clearTimeout(hideTimeout);
+            
+            // Ocultar después de 2 segundos
+            hideTimeout = setTimeout(() => {
+                nav.classList.add('hidden');
+            }, 2000);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Navegación con teclado
+        document.addEventListener('keydown', function(event) {
+            switch(event.key) {
+                case 'ArrowRight':
+                case ' ':
+                case 'PageDown':
+                    event.preventDefault();
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                case 'PageUp':
+                    event.preventDefault();
+                    previousSlide();
+                    break;
+                case 'Home':
+                    event.preventDefault();
+                    showSlide(0);
+                    break;
+                case 'End':
+                    event.preventDefault();
+                    showSlide(totalSlides - 1);
+                    break;
+                case 'F11':
+                    event.preventDefault();
+                    toggleFullscreen();
+                    break;
+                case 'Escape':
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                    break;
+            }
+        });
+
+        // Navegación con mouse/touch
+        let startX = 0;
+        let startY = 0;
+
+        document.addEventListener('touchstart', function(event) {
+            startX = event.touches[0].clientX;
+            startY = event.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', function(event) {
+            if (!startX || !startY) return;
+
+            let endX = event.changedTouches[0].clientX;
+            let endY = event.changedTouches[0].clientY;
+
+            let diffX = startX - endX;
+            let diffY = startY - endY;
+
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        nextSlide();
+                    } else {
+                        previousSlide();
+                    }
+                }
+            }
+
+            startX = 0;
+            startY = 0;
+        });
+
+        // Click para mostrar navegación
+        document.addEventListener('click', function(event) {
+            // Solo mostrar si no se hizo click en un botón de navegación
+            if (!event.target.closest('.navigation')) {
+                showNavigation();
+            }
+        });
+
+        // Movimiento del mouse para mostrar navegación
+        document.addEventListener('mousemove', function() {
+            showNavigation();
+        });
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            showSlide(0);
+            
+            // Ocultar navegación inicialmente después de 2 segundos
+            setTimeout(() => {
+                document.getElementById('navigation').classList.add('hidden');
+            }, 2000);
+        });
+
+        // Animaciones adicionales para elementos
+        function animateElements() {
+            const elements = document.querySelectorAll('.slide.active .metric-card, .slide.active .architecture-list li');
+            elements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
+                element.style.animation = 'fadeIn 0.6s ease-in-out forwards';
+            });
+        }
+
+        // Ejecutar animaciones cuando cambie la diapositiva
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    if (mutation.target.classList.contains('active')) {
+                        setTimeout(animateElements, 100);
+                    }
+                }
+            });
+        });
+
+        slides.forEach(slide => {
+            observer.observe(slide, { attributes: true });
+        });
+
+        // Prevenir zoom en dispositivos móviles
+        document.addEventListener('gesturestart', function(event) {
+            event.preventDefault();
+        });
+
+        document.addEventListener('gesturechange', function(event) {
+            event.preventDefault();
+        });
+
+        document.addEventListener('gestureend', function(event) {
+            event.preventDefault();
+        });
+    </script>
+
+    <style>
+        /* Animaciones adicionales */
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .metric-card {
+            animation: bounceIn 0.6s ease-in-out;
+        }
+
+        .architecture-list li {
+            animation: slideInFromLeft 0.6s ease-in-out;
+        }
+
+        .slide h2 {
+            animation: slideInFromRight 0.8s ease-in-out;
+        }
+
+        /* Efectos hover mejorados */
+        .metric-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .architecture-list li:hover {
+            background: rgba(255, 215, 0, 0.6);
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive mejorado */
+        @media (max-width: 1200px) {
+            .slide-content {
+                padding: 1.5rem;
+            }
+            .slide h2 { font-size: 2rem; }
+            .slide h3 { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 992px) {
+            .slide-content {
+                padding: 1rem;
+                max-width: 95%;
+            }
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .slide-content {
+                padding: 0.8rem;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Mejoras de accesibilidad */
+        .nav-btn:focus {
+            outline: 3px solid var(--simpson-blue);
+            outline-offset: 2px;
+        }
+
+        .slide:focus {
+            outline: none;
+        }
+
+        /* Indicador de carga */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: var(--simpson-yellow);
+            z-index: 9999;
+        }
+
+        /* Transiciones suaves para el cambio de diapositivas */
+        .slide {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .slide:not(.active) {
+            opacity: 0;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+    </style>
+</body>
+</html>

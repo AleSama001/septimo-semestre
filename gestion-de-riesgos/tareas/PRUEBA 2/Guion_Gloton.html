@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guión de Presentación - Sistema El Glotón</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #f39c12;
+            --success-color: #27ae60;
+            --info-color: #3498db;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .presentation-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            max-width: 1200px;
+            overflow: hidden;
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .slide-section {
+            display: none;
+            padding: 2rem;
+            min-height: 600px;
+        }
+
+        .slide-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .presenter-card {
+            background: linear-gradient(135deg, var(--info-color), var(--success-color));
+            color: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .presenter-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .script-content {
+            background: #f8f9fa;
+            border-left: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1rem 0;
+        }
+
+        .time-badge {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .navigation-controls {
+            background: var(--primary-color);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: var(--accent-color);
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-indicator {
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .key-points {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .key-points h5 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .key-points ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .key-points li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .transition-note {
+            background: linear-gradient(135deg, var(--success-color), #2ecc71);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .role-distribution {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .role-card {
+            background: white;
+            border: 2px solid var(--info-color);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .role-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .role-icon {
+            font-size: 2rem;
+            color: var(--info-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--accent-color), #e67e22);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .tips-section h6 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-counter">
+        <span id="currentSlide">1</span> / <span id="totalSlides">16</span>
+    </div>
+
+    <div class="presentation-container">
+        <!-- Header -->
+        <div class="header-section">
+            <h1><i class="fas fa-utensils"></i> Guión de Presentación</h1>
+            <h2>Sistema de Gestión para Restaurante "El Glotón"</h2>
+            <div class="overview-stats mt-4">
+                <div class="stat-card">
+                    <span class="stat-number">25-30</span>
+                    <span class="stat-label">Minutos</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">4</span>
+                    <span class="stat-label">Integrantes</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">16</span>
+                    <span class="stat-label">Diapositivas</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 1: Información General -->
+        <div class="slide-section active" id="slide1">
+            <h2><i class="fas fa-info-circle text-primary"></i> Información General del Proyecto</h2>
+            
+            <div class="role-distribution">
+                <div class="role-card">
+                    <div class="role-icon"><i class="fas fa-user-tie"></i></div>
+                    <h5>Italo Brignardello</h5>
+                    <p><strong>Product Owner</strong></p>
+                    <small>Diapositivas 1-4</small>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon"><i class="fas fa-cogs"></i></div>
+                    <h5>Patricio Quintanilla</h5>
+                    <p><strong>Scrum Master</strong></p>
+                    <small>Diapositivas 5-8</small>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon"><i class="fas fa-bug"></i></div>
+                    <h5>Claudio Sánchez</h5>
+                    <p><strong>QA Tester</strong></p>
+                    <small>Diapositivas 9-12</small>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon"><i class="fas fa-chart-line"></i></div>
+                    <h5>Alexander Seydewitz</h5>
+                    <p><strong>Analista de Negocio</strong></p>
+                    <small>Diapositivas 13-16</small>
+                </div>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-bullseye"></i> Objetivos de la Presentación</h5>
+                <ul>
+                    <li>Presentar el plan integral del Sistema de Gestión para "El Glotón"</li>
+                    <li>Demostrar la viabilidad técnica y económica del proyecto</li>
+                    <li>Explicar la metodología ágil implementada</li>
+                    <li>Justificar las decisiones de arquitectura y tecnología</li>
+                    <li>Mostrar el cronograma y presupuesto detallado</li>
+                </ul>
+            </div>
+
+            <div class="tips-section">
+                <h6><i class="fas fa-lightbulb"></i> Consejos para la Presentación</h6>
+                <p><strong>Mantener contacto visual:</strong> Dirigirse tanto al docente como a los compañeros<br>
+                <strong>Usar ejemplos concretos:</strong> Relacionar cada funcionalidad con beneficios reales<br>
+                <strong>Gestionar el tiempo:</strong> Respetar los tiempos asignados para cada sección</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Diapositiva 1 - Portada -->
+        <div class="slide-section" id="slide2">
+            <div class="presenter-card">
+                <div class="presenter-avatar">IB</div>
+                <div>
+                    <h4>Italo Brignardello - Product Owner</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 1 minuto</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-home"></i> Diapositiva 1: Portada</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Italo:</h5>
+                <p><strong>"Buenos días/tardes. Mi nombre es Italo Brignardello y junto a mis compañeros Patricio Quintanilla, Claudio Sánchez y Alexander Seydewitz, les presentaremos hoy el Plan de Proyecto para el Sistema de Gestión del Restaurante 'El Glotón'."</strong></p>
+                
+                <p><strong>"Este proyecto representa una oportunidad única de modernizar y optimizar las operaciones de un restaurante que actualmente maneja 5 carros móviles de comida, implementando tecnología que no solo mejorará la eficiencia operativa, sino que también sentará las bases para su futura expansión."</strong></p>
+                
+                <p><strong>"A lo largo de esta presentación, les mostraremos cómo hemos estructurado un plan integral que abarca desde la identificación de requisitos hasta la implementación de un sistema completo de gestión, utilizando metodologías ágiles y las mejores prácticas de la industria."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Presentación del equipo completo y roles específicos</li>
+                    <li>Contexto del restaurante: 5 carros móviles de comida</li>
+                    <li>Enfoque en modernización y escalabilidad</li>
+                    <li>Uso de metodologías ágiles y mejores prácticas</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: Diapositiva 2 - Versión del Plan -->
+        <div class="slide-section" id="slide3">
+            <div class="presenter-card">
+                <div class="presenter-avatar">IB</div>
+                <div>
+                    <h4>Italo Brignardello - Product Owner</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 1.5 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-code-branch"></i> Diapositiva 2: Versión del Plan</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Italo:</h5>
+                <p><strong>"Como pueden observar en esta tabla, nuestro plan ha evolucionado a través de múltiples iteraciones, lo que demuestra nuestro compromiso con la mejora continua y la planificación detallada."</strong></p>
+                
+                <p><strong>"La versión 1.0 que presentamos hoy es el resultado de un proceso iterativo que comenzó el 1 de mayo con un borrador inicial. Cada versión ha incorpora
+
+
+                                    <p><strong>"La versión 1.0 que presentamos hoy es el resultado de un proceso iterativo que comenzó el 1 de mayo con un borrador inicial. Cada versión ha incorporado retroalimentación y refinamientos importantes:"</strong></p>
+                
+                <ul>
+                    <li><strong>"La versión 0.2 se enfocó en la definición clara de roles y responsabilidades, asegurando que cada miembro del equipo tenga funciones específicas y bien delimitadas."</strong></li>
+                    <li><strong>"La versión 0.3 incluyó una revisión exhaustiva del cronograma y presupuesto, validando la viabilidad económica y temporal del proyecto."</strong></li>
+                    <li><strong>"Esta versión final integra todos los aprendizajes y presenta un plan robusto y ejecutable."</strong></li>
+                </ul>
+                
+                <p><strong>"Esta evolución del documento refleja nuestra metodología ágil, donde la planificación es un proceso continuo que se adapta y mejora con nueva información y retroalimentación."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Proceso iterativo de mejora continua</li>
+                    <li>Evolución desde borrador hasta versión final</li>
+                    <li>Incorporación de retroalimentación en cada versión</li>
+                    <li>Metodología ágil aplicada a la planificación</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 4: Diapositiva 3 - Identificación del Proyecto -->
+        <div class="slide-section" id="slide4">
+            <div class="presenter-card">
+                <div class="presenter-avatar">IB</div>
+                <div>
+                    <h4>Italo Brignardello - Product Owner</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 2 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-project-diagram"></i> Diapositiva 3: Identificación del Proyecto</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Italo:</h5>
+                <p><strong>"Permítanme presentarles los fundamentos de nuestro proyecto. El Sistema de Gestión para 'El Glotón' no es simplemente una modernización tecnológica, sino una transformación estratégica del negocio."</strong></p>
+                
+                <h6><strong>Contexto del Proyecto:</strong></h6>
+                <p><strong>"Actualmente, 'El Glotón' opera 5 carros móviles de comida que enfrentan desafíos típicos de la industria: gestión manual de pedidos, falta de trazabilidad, tiempos de espera prolongados y dificultades para escalar el negocio."</strong></p>
+                
+                <h6><strong>Objetivos Estratégicos:</strong></h6>
+                <p><strong>"Nuestros cinco objetivos principales están diseñados para abordar estos desafíos de manera integral:"</strong></p>
+                <ol>
+                    <li><strong>"Automatización de pedidos: Eliminar errores humanos y acelerar el proceso"</strong></li>
+                    <li><strong>"Optimización de entregas: Reducir tiempos de espera y mejorar la experiencia del cliente"</strong></li>
+                    <li><strong>"Reducción de errores: Implementar controles automáticos de calidad"</strong></li>
+                    <li><strong>"Sistema de delivery: Expandir el alcance del negocio más allá de los carros móviles"</strong></li>
+                    <li><strong>"Escalabilidad: Crear una base tecnológica que permita crecimiento futuro"</strong></li>
+                </ol>
+                
+                <p><strong>"El cronograma establecido de julio a diciembre de 2025 nos permite una implementación gradual y controlada, minimizando riesgos operativos mientras maximizamos el valor entregado."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Transformación estratégica, no solo tecnológica</li>
+                    <li>Desafíos actuales del negocio claramente identificados</li>
+                    <li>5 objetivos específicos y medibles</li>
+                    <li>Cronograma de 6 meses (julio-diciembre 2025)</li>
+                    <li>Implementación gradual para minimizar riesgos</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 5: Diapositiva 4 - Roles y Responsabilidades -->
+        <div class="slide-section" id="slide5">
+            <div class="presenter-card">
+                <div class="presenter-avatar">IB</div>
+                <div>
+                    <h4>Italo Brignardello - Product Owner</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 2 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-users"></i> Diapositiva 4: Roles y Responsabilidades</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Italo:</h5>
+                <p><strong>"La estructura organizacional de nuestro proyecto está diseñada siguiendo las mejores prácticas de metodologías ágiles, específicamente el framework Scrum, adaptado a las necesidades específicas de este proyecto."</strong></p>
+                
+                <h6><strong>Estructura del Equipo:</strong></h6>
+                <p><strong>"Como Product Owner, mi responsabilidad principal es ser la voz del cliente y del negocio. Esto significa que definiré las prioridades del producto, gestionaré el backlog y aseguraré que cada funcionalidad desarrollada genere valor real para 'El Glotón'."</strong></p>
+                
+                <p><strong>"Patricio, como Scrum Master, será nuestro facilitador y coach, eliminando impedimentos y asegurando que el equipo pueda trabajar de manera eficiente y productiva."</strong></p>
+                
+                <h6><strong>Especialización Técnica:</strong></h6>
+                <p><strong>"Hemos incluido roles especializados que son críticos para el éxito:"</strong></p>
+                <ul>
+                    <li><strong>"El equipo de desarrollo manejará la implementación técnica"</strong></li>
+                    <li><strong>"Claudio, como QA Tester, garantizará la calidad en cada entrega"</strong></li>
+                    <li><strong>"Alexander, como Analista de Negocio, asegurará que los requisitos estén claramente definidos y validados"</strong></li>
+                    <li><strong>"El equipo DevOps manejará la infraestructura y despliegue"</strong></li>
+                </ul>
+                
+                <p><strong>"Esta estructura nos permite tener expertise específico en cada área crítica mientras mantenemos la agilidad y comunicación efectiva que caracteriza a los equipos Scrum exitosos."</strong></p>
+            </div>
+
+            <div class="transition-note">
+                <i class="fas fa-arrow-right"></i> <strong>Transición a Patricio:</strong> "Ahora le cedo la palabra a Patricio, quien nos explicará en detalle las metodologías que utilizaremos."
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Framework Scrum adaptado al proyecto</li>
+                    <li>Roles claramente definidos y especializados</li>
+                    <li>Product Owner como voz del cliente</li>
+                    <li>Scrum Master como facilitador</li>
+                    <li>Expertise técnico distribuido en el equipo</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 6: Diapositiva 5 - Metodologías -->
+        <div class="slide-section" id="slide6">
+            <div class="presenter-card">
+                <div class="presenter-avatar">PQ</div>
+                <div>
+                    <h4>Patricio Quintanilla - Scrum Master</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 2.5 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-cogs"></i> Diapositiva 5: Metodologías</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Patricio:</h5>
+                <p><strong>"Gracias, Italo. Como Scrum Master del proyecto, me complace explicarles por qué hemos seleccionado un enfoque híbrido que combina lo mejor de las metodologías ágiles con elementos estructurados de gestión de proyectos."</strong></p>
+                
+                <h6><strong>¿Por qué Scrum para el Desarrollo?</strong></h6>
+                <p><strong>"Hemos elegido Scrum porque se adapta perfectamente a las necesidades de 'El Glotón':"</strong></p>
+                <ol>
+                    <li><strong>"Sprints de 2 semanas: Nos permiten entregar valor de manera incremental y obtener retroalimentación temprana del cliente"</strong></li>
+                    <li><strong>"Daily Standups: Aseguran comunicación constante y identificación rápida de impedimentos"</strong></li>
+                    <li><strong>"Sprint Planning: Garantiza que el equipo esté alineado en objetivos y prioridades"</strong></li>
+                    <li><strong>"Sprint Review y Retrospectiva: Facilitan la mejora continua y la adaptación"</strong></li>
+                </ol>
+                
+                <h6><strong>Enfoque Híbrido Justificado:</strong></h6>
+                <p><strong>"Aunque Scrum es excelente para el desarrollo, hemos complementado con elementos de PMI para:"</strong></p>
+                <ul>
+                    <li><strong>"Gestión de Riesgos: Matriz formal de riesgos para identificar y mitigar amenazas"</strong></li>
+                    <li><strong>"Gestión de Comunicaciones: Plan estructurado para stakeholders"</strong></li>
+                    <li><strong>"Gestión de Costos: Seguimiento riguroso del presupuesto"</strong></li>
+                    <li><strong>"Informes de Avance: Reportes formales al final de cada sprint"</strong></li>
+                </ul>
+                
+                <p><strong>"Esta combinación nos da la flexibilidad de Scrum con la estructura necesaria para un proyecto de esta magnitud y complejidad. El uso de Jira como herramienta central nos permitirá mantener visibilidad completa del progreso y facilitar la colaboración del equipo."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Enfoque híbrido: Scrum + PMI</li>
+                    <li>Sprints de 2 semanas para entregas incrementales</li>
+                    <li>Ceremonias Scrum para comunicación efectiva</li>
+                    <li>Elementos PMI para gestión formal</li>
+                    <li>Jira como herramienta central de gestión</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 7: Diapositiva 6 - Categorías -->
+        <div class="slide-section" id="slide7">
+            <div class="presenter-card">
+                <div class="presenter-avatar">PQ</div>
+                <div>
+                    <h4>Patricio Quintanilla - Scrum Master</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 2 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-layer-group"></i> Diapositiva 6: Categorías</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Patricio:</h5>
+                <p><strong>"Nuestro sistema está estructurado en tres categorías principales que abordan diferentes aspectos del negocio de 'El Glotón'. Esta segmentación nos permite un desarrollo modular y una implementación por fases."</strong></p>
+                
+                <h6><strong>Aplicación Móvil para Clientes:</strong></h6>
+                <p><strong>"Esta será la cara visible del sistema para los usuarios finales. Incluye funcionalidades esenciales como registro de usuarios, visualización del menú en tiempo real, realización de pedidos con personalización, seguimiento en tiempo real del estado del pedido, y un historial completo para facilitar pedidos recurrentes."</strong></p>
+                
+                <h6><strong>Sistema de Gestión Administrativo:</strong></h6>
+                <p><strong>"El corazón operativo del negocio. Este panel permitirá la gestión completa de productos y precios, administración de los 5 carros móviles, gestión de personal y turnos, generación de reportes de ventas y estadísticas detalladas, y gestión de clientes frecuentes con programas de fidelización."</strong></p>
+                
+                <h6><strong>Sistema de Delivery:</strong></h6>
+                <p><strong>"La expansión natural del negocio más allá de los carros móviles. Incluye asignación inteligente de repartidores, gestión optimizada de tiempos de entrega, integración con servicios externos como Google Maps, y reportes de eficiencia para optimización continua."</strong></p>
+                
+                <p><strong>"Esta arquitectura modular nos permite priorizar el desarrollo según el valor de negocio e implementar de manera incremental, reduciendo riesgos y permitiendo retroalimentación temprana en cada módulo."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Tres categorías principales del sistema</li>
+                    <li>Desarrollo modular y por fases</li>
+                    <li>App móvil como interfaz del cliente</li>
+                    <li>Sistema administrativo como corazón operativo</li>
+                    <li>Sistema de delivery para expansión del negocio</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 8: Diapositiva 7 - RBS -->
+        <div class="slide-
+
+
+
+                <!-- Slide 8: Diapositiva 7 - RBS -->
+        <div class="slide-section" id="slide8">
+            <div class="presenter-card">
+                <div class="presenter-avatar">PQ</div>
+                <div>
+                    <h4>Patricio Quintanilla - Scrum Master</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 2 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-sitemap"></i> Diapositiva 7: RBS (Estructura de Desglose de Recursos)</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Patricio:</h5>
+                <p><strong>"La Estructura de Desglose de Recursos nos permite visualizar y planificar todos los recursos necesarios para el éxito del proyecto, organizados en cuatro categorías estratégicas."</strong></p>
+                
+                <h6><strong>Recursos Humanos - El Activo Más Valioso:</strong></h6>
+                <p><strong>"Nuestro equipo Scrum de 10 personas está cuidadosamente balanceado: 1 Product Owner para la visión del negocio, 1 Scrum Master para facilitar el proceso, 4 desarrolladores con expertise en diferentes tecnologías, 2 especialistas en QA para asegurar calidad, y 2 profesionales DevOps para infraestructura y despliegue."</strong></p>
+                
+                <h6><strong>Recursos Tecnológicos - Infraestructura Robusta:</strong></h6>
+                <p><strong>"Utilizaremos AWS como plataforma cloud principal, 10 laptops de desarrollo con especificaciones adecuadas, 5 tablets para pruebas de la aplicación móvil, y diversas licencias de software especializadas."</strong></p>
+                
+                <h6><strong>Herramientas de Productividad:</strong></h6>
+                <p><strong>"Jira para gestión ágil del proyecto, Git/GitHub para control de versiones y colaboración, Slack para comunicación en tiempo real, y Confluence para documentación centralizada."</strong></p>
+                
+                <h6><strong>Distribución Financiera Estratégica:</strong></h6>
+                <p><strong>"El 60% del presupuesto se destina a recursos humanos, reconociendo que el talento es nuestro principal diferenciador. El 20% para infraestructura cloud escalable, 15% para herramientas y software especializado, y un 5% de contingencia para imprevistos."</strong></p>
+                
+                <p><strong>"Esta distribución refleja las mejores prácticas de la industria y asegura que tengamos los recursos necesarios para entregar un producto de calidad."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Equipo balanceado de 10 personas</li>
+                    <li>Infraestructura cloud con AWS</li>
+                    <li>Herramientas de productividad integradas</li>
+                    <li>60% del presupuesto en recursos humanos</li>
+                    <li>5% de contingencia para imprevistos</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 9: Diapositiva 8 - Recursos -->
+        <div class="slide-section" id="slide9">
+            <div class="presenter-card">
+                <div class="presenter-avatar">PQ</div>
+                <div>
+                    <h4>Patricio Quintanilla - Scrum Master</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 1.5 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-users-cog"></i> Diapositiva 8: Recursos</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Patricio:</h5>
+                <p><strong>"Esta tabla detalla la composición específica de nuestro equipo y la disponibilidad de cada recurso, lo cual es fundamental para la planificación y ejecución exitosa del proyecto."</strong></p>
+                
+                <h6><strong>Perfiles Especializados:</strong></h6>
+                <p><strong>"Cada rol ha sido seleccionado por su expertise específico:"</strong></p>
+                <ul>
+                    <li><strong>"Product Owner: Profesional con experiencia comprobada en gestión de productos digitales, especialmente en el sector gastronómico"</strong></li>
+                    <li><strong>"Scrum Master: Certificado en metodologías ágiles con experiencia en equipos de desarrollo"</strong></li>
+                    <li><strong>"Desarrolladores Senior: 2 profesionales con experiencia en aplicaciones web y móviles, especializados en tecnologías modernas"</strong></li>
+                    <li><strong>"Desarrolladores Junior: 2 desarrolladores que complementan al equipo senior y aportan energía e ideas frescas"</strong></li>
+                    <li><strong>"Administrador de BD: Especialista en bases de datos relacionales y NoSQL, disponible al 50% ya que su expertise se requiere principalmente en fases específicas"</strong></li>
+                    <li><strong>"Testers QA: 2 especialistas en pruebas de software que trabajarán en paralelo con el desarrollo"</strong></li>
+                    <li><strong>"DevOps: Especialista en integración continua y despliegue automatizado"</strong></li>
+                </ul>
+                
+                <h6><strong>Disponibilidad Optimizada:</strong></h6>
+                <p><strong>"La mayoría de recursos están disponibles al 100%, lo que garantiza dedicación completa al proyecto. El administrador de BD al 50% es suficiente dado que su intervención es más intensiva en fases específicas de diseño e implementación de la base de datos."</strong></p>
+                
+                <p><strong>"Esta estructura nos asegura tener el expertise necesario cuando lo necesitamos, optimizando costos sin comprometer calidad."</strong></p>
+            </div>
+
+            <div class="transition-note">
+                <i class="fas fa-arrow-right"></i> <strong>Transición a Claudio:</strong> "Ahora Claudio nos presentará el cronograma detallado y la gestión del proyecto."
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Perfiles especializados para cada rol</li>
+                    <li>Experiencia comprobada en sectores relevantes</li>
+                    <li>Disponibilidad optimizada según necesidades</li>
+                    <li>Balance entre seniors y juniors</li>
+                    <li>Expertise específico cuando se necesita</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 10: Diapositiva 9 - Cronograma -->
+        <div class="slide-section" id="slide10">
+            <div class="presenter-card">
+                <div class="presenter-avatar">CS</div>
+                <div>
+                    <h4>Claudio Sánchez - QA Tester</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 3 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-calendar-alt"></i> Diapositiva 9: Cronograma</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Claudio:</h5>
+                <p><strong>"Gracias, Patricio. Como responsable de QA, he trabajado estrechamente en la planificación del cronograma para asegurar que cada fase incluya los controles de calidad necesarios."</strong></p>
+                
+                <h6><strong>Estructura Temporal del Proyecto:</strong></h6>
+                <p><strong>"Nuestro cronograma de 6 meses está diseñado para maximizar el valor entregado mientras minimizamos los riesgos. Permítanme explicar cada fase:"</strong></p>
+                
+                <h6><strong>Sprint 0 - Inicio y Planificación (Julio):</strong></h6>
+                <p><strong>"Esta fase es crítica para el éxito del proyecto. Incluye el relevamiento detallado de requisitos con los stakeholders de 'El Glotón', la definición de la arquitectura técnica que soportará todo el sistema, y la planificación detallada de todos los sprints posteriores. Como QA, estableceré los criterios de aceptación y las estrategias de prueba desde el inicio."</strong></p>
+                
+                <h6><strong>Sprints 1-4 - Sistema de Gestión (Agosto-Septiembre):</strong></h6>
+                <p><strong>"Desarrollaremos el corazón del sistema: el backend que manejará toda la lógica de negocio, el frontend administrativo para la gestión de carros y productos, y realizaremos pruebas unitarias e integración continuas. Esta fase incluye pruebas de carga para asegurar que el sistema pueda manejar múltiples carros simultáneamente."</strong></p>
+                
+                <h6><strong>Sprints 5-8 - Aplicación Móvil (Octubre-Noviembre):</strong></h6>
+                <p><strong>"Desarrollo de la aplicación móvil para clientes, incluyendo todas las funcionalidades de pedidos, seguimiento y pagos. Las pruebas de usabilidad serán fundamentales en esta fase para asegurar una experiencia de usuario excepcional."</strong></p>
+                
+                <h6><strong>Sprints 9-10 - Sistema de Delivery (Diciembre):</strong></h6>
+                <p><strong>"Implementación del sistema de delivery con integración de mapas y optimización de rutas. Las pruebas de integración con servicios externos serán críticas aquí."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Cronograma de 6 meses bien estructurado</li>
+                    <li>Sprint 0 crítico para establecer bases</li>
+                    <li>Desarrollo incremental por módulos</li>
+                    <li>QA integrado en cada fase</li>
+                    <li>Pruebas específicas para cada componente</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 11: Diapositiva 10 - WBS -->
+        <div class="slide-section" id="slide11">
+            <div class="presenter-card">
+                <div class="presenter-avatar">CS</div>
+                <div>
+                    <h4>Claudio Sánchez - QA Tester</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 2.5 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-project-diagram"></i> Diapositiva 10: WBS (Estructura de Desglose del Trabajo)</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Claudio:</h5>
+                <p><strong>"La Estructura de Desglose del Trabajo nos permite visualizar todas las actividades necesarias organizadas jerárquicamente, asegurando que no se omita ningún componente crítico del proyecto."</strong></p>
+                
+                <h6><strong>Nivel 1 - Fases Principales:</strong></h6>
+                <p><strong>"Hemos identificado cuatro fases principales que abarcan todo el ciclo de vida del proyecto:"</strong></p>
+                <ol>
+                    <li><strong>"Planificación y Análisis: Donde definimos requisitos, arquitectura y estrategias de prueba"</strong></li>
+                    <li><strong>"Desarrollo del Backend: La base tecnológica que soportará todas las operaciones"</strong></li>
+                    <li><strong>"Desarrollo Frontend: Tanto la aplicación móvil como el panel administrativo"</strong></li>
+                    <li><strong>"Integración y Despliegue: Donde todo se une y se pone en producción"</strong></li>
+                </ol>
+                
+                <h6><strong>Nivel 2 - Componentes Específicos:</strong></h6>
+                <p><strong>"Cada fase se descompone en componentes específicos:"</strong></p>
+                <ul>
+                    <li><strong>"API REST para comunicación entre sistemas"</strong></li>
+                    <li><strong>"Base de datos optimizada para transacciones"</strong></li>
+                    <li><strong>"Aplicación móvil nativa para iOS y Android"</strong></li>
+                    <li><strong>"Panel web administrativo responsivo"</strong></li>
+                    <li><strong>"Sistema de notificaciones en tiempo real"</strong></li>
+                    <li><strong>"Módulo de reportes y analytics"</strong></li>
+                </ul>
+                
+                <h6><strong>Nivel 3 - Actividades de QA:</strong></h6>
+                <p><strong>"Como QA, he asegurado que cada componente incluya actividades específicas de calidad: pruebas unitarias, pruebas de integración, pruebas de usabilidad, pruebas de rendimiento, y pruebas de seguridad. Esta estructura nos garantiza cobertura completa de calidad en todo el proyecto."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Estructura jerárquica completa del trabajo</li>
+                    <li>4 fases principales bien definidas</li>
+                    <li>Componentes específicos identificados</li>
+                    <li>QA integrado en cada nivel</li>
+                    <li>Cobertura completa de actividades</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 12: Diapositiva 11 - Presupuesto -->
+        <div class="slide-section" id="slide12">
+            <div class="presenter-card">
+                <div class="presenter-avatar">CS</div>
+                <div>
+                    <h4>Claudio Sánchez - QA Tester</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 2.5 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-dollar-sign"></i> Diapositiva 11: Presupuesto</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Claudio:</h5>
+
+                <p><strong>"El presupuesto del proyecto ha sido cuidadosamente calculado considerando todos los recursos necesarios y las mejores prácticas de la industria para proyectos de esta envergadura."</strong></p>
+                
+                <h6><strong>Desglose Detallado del Presupuesto:</strong></h6>
+                <p><strong>"El presupuesto total de $85,000 USD se distribuye estratégicamente:"</strong></p>
+                
+                <ul>
+                    <li><strong>"Recursos Humanos ($51,000 - 60%): Esta es nuestra mayor inversión, reflejando que el talento humano es el factor más crítico para el éxito. Incluye salarios del equipo completo durante los 6 meses del proyecto."</strong></li>
+                    <li><strong>"Infraestructura Cloud ($17,000 - 20%): Servidores AWS, bases de datos, servicios de almacenamiento y CDN para asegurar rendimiento óptimo y escalabilidad."</strong></li>
+                    <li><strong>"Software y Licencias ($12,750 - 15%): Herramientas de desarrollo, licencias de software especializado, y plataformas de testing."</strong></li>
+                    <li><strong>"Contingencia ($4,250 - 5%): Reserva para imprevistos y cambios de alcance menores."</strong></li>
+                </ul>
+                
+                <h6><strong>Justificación Económica:</strong></h6>
+                <p><strong>"Esta distribución sigue las mejores prácticas de la industria donde el 60-70% se destina a recursos humanos en proyectos de desarrollo de software. La inversión en infraestructura cloud nos permite escalabilidad sin costos iniciales prohibitivos."</strong></p>
+                
+                <h6><strong>ROI Esperado:</strong></h6>
+                <p><strong>"Estimamos que 'El Glotón' recuperará esta inversión en 12-18 meses a través de mayor eficiencia operativa, reducción de errores, y expansión del negocio con el sistema de delivery."</strong></p>
+                
+                <h6><strong>Control de Costos:</strong></h6>
+                <p><strong>"Implementaremos seguimiento semanal del presupuesto con reportes detallados al final de cada sprint, asegurando transparencia total y control proactivo de los costos."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Presupuesto total: $85,000 USD</li>
+                    <li>60% en recursos humanos (inversión en talento)</li>
+                    <li>20% en infraestructura cloud escalable</li>
+                    <li>5% de contingencia para imprevistos</li>
+                    <li>ROI esperado en 12-18 meses</li>
+                    <li>Control semanal de costos</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 13: Diapositiva 12 - Matriz de Riesgos -->
+        <div class="slide-section" id="slide13">
+            <div class="presenter-card">
+                <div class="presenter-avatar">CS</div>
+                <div>
+                    <h4>Claudio Sánchez - QA Tester</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 2 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-exclamation-triangle"></i> Diapositiva 12: Matriz de Riesgos</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Claudio:</h5>
+                <p><strong>"La gestión proactiva de riesgos es fundamental para el éxito del proyecto. Hemos identificado y categorizado los principales riesgos según su probabilidad e impacto."</strong></p>
+                
+                <h6><strong>Riesgos de Alto Impacto:</strong></h6>
+                <ul>
+                    <li><strong>"Cambios en requisitos del cliente (Probabilidad: Media, Impacto: Alto): Mitigación a través de validaciones frecuentes y documentación detallada de cambios."</strong></li>
+                    <li><strong>"Problemas de integración con sistemas externos (Probabilidad: Media, Impacto: Alto): Realizaremos pruebas de integración tempranas y mantendremos APIs de respaldo."</strong></li>
+                    <li><strong>"Retrasos en entregas de componentes críticos (Probabilidad: Baja, Impacto: Alto): Buffer de tiempo en actividades críticas y recursos de respaldo identificados."</strong></li>
+                </ul>
+                
+                <h6><strong>Riesgos Técnicos:</strong></h6>
+                <ul>
+                    <li><strong>"Problemas de rendimiento en horas pico (Probabilidad: Media, Impacto: Medio): Pruebas de carga desde etapas tempranas y arquitectura escalable."</strong></li>
+                    <li><strong>"Vulnerabilidades de seguridad (Probabilidad: Baja, Impacto: Alto): Auditorías de seguridad regulares y seguimiento de mejores prácticas."</strong></li>
+                </ul>
+                
+                <h6><strong>Plan de Contingencia:</strong></h6>
+                <p><strong>"Para cada riesgo identificado, tenemos planes de contingencia específicos, responsables asignados, y métricas de seguimiento. Revisaremos la matriz de riesgos en cada retrospectiva de sprint."</strong></p>
+            </div>
+
+            <div class="transition-note">
+                <i class="fas fa-arrow-right"></i> <strong>Transición a Alexander:</strong> "Ahora Alexander nos presentará la justificación del proyecto y las conclusiones finales."
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Gestión proactiva de riesgos</li>
+                    <li>Categorización por probabilidad e impacto</li>
+                    <li>Planes de contingencia específicos</li>
+                    <li>Mitigación temprana de riesgos técnicos</li>
+                    <li>Revisión continua en cada sprint</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 14: Diapositiva 13 - Justificación del Proyecto -->
+        <div class="slide-section" id="slide14">
+            <div class="presenter-card">
+                <div class="presenter-avatar">AS</div>
+                <div>
+                    <h4>Alexander Seydewitz - Analista de Negocio</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 3 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-chart-line"></i> Diapositiva 13: Justificación del Proyecto</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Alexander:</h5>
+                <p><strong>"Gracias, Claudio. Como Analista de Negocio, he realizado un análisis exhaustivo que demuestra la viabilidad y necesidad estratégica de este proyecto para 'El Glotón'."</strong></p>
+                
+                <h6><strong>Análisis del Problema Actual:</strong></h6>
+                <p><strong>"El restaurante 'El Glotón' enfrenta desafíos significativos que limitan su crecimiento:"</strong></p>
+                <ul>
+                    <li><strong>"Gestión manual de pedidos genera un 15% de errores promedio"</strong></li>
+                    <li><strong>"Tiempo promedio de atención de 12 minutos por pedido"</strong></li>
+                    <li><strong>"Falta de trazabilidad en inventarios y ventas"</strong></li>
+                    <li><strong>"Imposibilidad de expandir sin incrementar exponencialmente los costos operativos"</strong></li>
+                    <li><strong>"Pérdida de clientes por tiempos de espera prolongados"</strong></li>
+                </ul>
+                
+                <h6><strong>Beneficios Cuantificables del Sistema:</strong></h6>
+                <ul>
+                    <li><strong>"Reducción del 80% en errores de pedidos mediante automatización"</strong></li>
+                    <li><strong>"Disminución del 40% en tiempo de atención por pedido"</strong></li>
+                    <li><strong>"Incremento estimado del 25% en ventas por mayor eficiencia"</strong></li>
+                    <li><strong>"Reducción del 30% en costos operativos por optimización de procesos"</strong></li>
+                    <li><strong>"Capacidad de atender 3x más pedidos con la misma dotación"</strong></li>
+                </ul>
+                
+                <h6><strong>Ventaja Competitiva:</strong></h6>
+                <p><strong>"Este sistema posicionará a 'El Glotón' como líder tecnológico en el sector de food trucks, permitiendo:"</strong></p>
+                <ul>
+                    <li><strong>"Experiencia de cliente superior con seguimiento en tiempo real"</strong></li>
+                    <li><strong>"Capacidad de expansión rápida y controlada"</strong></li>
+                    <li><strong>"Datos analíticos para toma de decisiones estratégicas"</strong></li>
+                    <li><strong>"Diferenciación clara frente a competidores tradicionales"</strong></li>
+                </ul>
+                
+                <h6><strong>Análisis Costo-Beneficio:</strong></h6>
+                <p><strong>"Con una inversión de $85,000 y beneficios anuales estimados en $120,000, el proyecto presenta un ROI del 141% en el primer año, con punto de equilibrio a los 8.5 meses."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Problemas actuales cuantificados</li>
+                    <li>Beneficios medibles y específicos</li>
+                    <li>ROI del 141% en el primer año</li>
+                    <li>Ventaja competitiva sostenible</li>
+                    <li>Punto de equilibrio en 8.5 meses</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 15: Diapositiva 14 - Análisis de Stakeholders -->
+        <div class="slide-section" id="slide15">
+            <div class="presenter-card">
+                <div class="presenter-avatar">AS</div>
+                <div>
+                    <h4>Alexander Seydewitz - Analista de Negocio</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 2 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-users"></i> Diapositiva 14: Análisis de Stakeholders</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Alexander:</h5>
+                <p><strong>"El éxito del proyecto depende de la gestión efectiva de todos los stakeholders involucrados. Hemos identificado y categorizado a cada grupo según su influencia e interés en el proyecto."</strong></p>
+                
+                <h6><strong>Stakeholders Primarios (Alto Poder, Alto Interés):</strong></h6>
+                <ul>
+                    <li><strong>"Propietario de 'El Glotón': Sponsor principal del proyecto, requiere reportes semanales y participación en decisiones estratégicas"</strong></li>
+                    <li><strong>"Gerente de Operaciones: Usuario principal del sistema administrativo, participará en todas las validaciones de requisitos"</strong></li>
+                    <li><strong>"Equipo de Desarrollo: Ejecutores directos del proyecto, requieren comunicación diaria y resolución rápida de impedimentos"</strong></li>
+                </ul>
+                
+                <h6><strong>Stakeholders Secundarios (Medio Poder, Alto Interés):</strong></h6>
+                <ul>
+                    <li><strong>"Personal de los carros móviles: Usuarios finales del sistema, participarán en pruebas de usabilidad y capacitación"</strong></li>
+                    <li><strong>"Clientes frecuentes: Validarán la aplicación móvil a través de grupos focales y pruebas beta"</strong></li>
+                </ul>
+                
+                <h6><strong>Stakeholders de Apoyo (Bajo Poder, Medio Interés):</strong></h6>
+                <ul>
+                    <li><strong>"Proveedores de tecnología: AWS, proveedores de licencias, requieren coordinación técnica"</strong></li>
+                    <li><strong>"Entidades regulatorias: Cumplimiento de normativas de seguridad alimentaria y protección de datos"</strong></li>
+                </ul>
+                
+                <h6><strong>Estrategia de Comunicación:</strong></h6>
+                <p><strong>"Hemos definido un plan de comunicación específico para cada grupo: reportes ejecutivos mensuales para stakeholders primarios, demos funcionales quincenales para usuarios, y comunicaciones técnicas semanales para proveedores."</strong></p>
+                
+                <p><strong>"Esta estrategia asegura que cada stakeholder reciba la información relevante en el formato y frecuencia adecuados, manteniendo el engagement y minimizando resistencia al cambio."</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Stakeholders categorizados por poder e interés</li>
+                    <li>Estrategias específicas para cada grupo</li>
+                    <li>Plan de comunicación estructurado</li>
+                    <li>Participación activa en validaciones</li>
+                    <li>Gestión proactiva de resistencia al cambio</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 16: Diapositiva 15 - Conclusiones -->
+        <div class="slide-section" id="slide16">
+            <div class="presenter-card">
+                <div class="presenter-avatar">AS</div>
+                <div>
+                    <h4>Alexander Seydewitz - Analista de Negocio</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 2.5 minutos</span>
+                </div>
+            </div>
+
+            <h3>
+
+
+                            <h3><i class="fas fa-flag-checkered"></i> Diapositiva 15: Conclusiones</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión de Alexander:</h5>
+                <p><strong>"Para concluir nuestra presentación, quiero resumir los puntos clave que demuestran por qué este proyecto es no solo viable, sino esencial para el futuro de 'El Glotón'."</strong></p>
+                
+                <h6><strong>Síntesis del Valor del Proyecto:</strong></h6>
+                <p><strong>"Hemos presentado un plan integral que aborda cada aspecto crítico del proyecto:"</strong></p>
+                <ul>
+                    <li><strong>"Un equipo multidisciplinario con roles claramente definidos y expertise comprobado"</strong></li>
+                    <li><strong>"Metodología híbrida que combina la agilidad de Scrum con la estructura de PMI"</strong></li>
+                    <li><strong>"Cronograma realista de 6 meses con entregas incrementales de valor"</strong></li>
+                    <li><strong>"Presupuesto justificado de $85,000 con ROI del 141% en el primer año"</strong></li>
+                    <li><strong>"Gestión proactiva de riesgos con planes de contingencia específicos"</strong></li>
+                </ul>
+                
+                <h6><strong>Impacto Transformacional:</strong></h6>
+                <p><strong>"Este sistema no es solo una mejora tecnológica, es una transformación completa del modelo de negocio que permitirá a 'El Glotón':"</strong></p>
+                <ul>
+                    <li><strong>"Triplicar su capacidad operativa sin incrementar proporcionalmente los costos"</strong></li>
+                    <li><strong>"Expandirse geográficamente con el sistema de delivery"</strong></li>
+                    <li><strong>"Tomar decisiones basadas en datos reales y analytics"</strong></li>
+                    <li><strong>"Ofrecer una experiencia de cliente diferenciada y superior"</strong></li>
+                </ul>
+                
+                <h6><strong>Factores Críticos de Éxito:</strong></h6>
+                <p><strong>"Hemos identificado y planificado para los factores que asegurarán el éxito:"</strong></p>
+                <ul>
+                    <li><strong>"Comunicación constante con stakeholders"</strong></li>
+                    <li><strong>"Entregas incrementales para validación temprana"</strong></li>
+                    <li><strong>"Calidad integrada en cada fase del desarrollo"</strong></li>
+                    <li><strong>"Gestión proactiva de cambios y riesgos"</strong></li>
+                </ul>
+                
+                <h6><strong>Llamada a la Acción:</strong></h6>
+                <p><strong>"Estamos preparados para comenzar inmediatamente. Tenemos el equipo, la metodología, el plan y la visión clara del éxito. 'El Glotón' tiene la oportunidad de liderar la transformación digital en el sector de food trucks, y nosotros somos el equipo indicado para hacer realidad esta visión."</strong></p>
+                
+                <p><strong>"¿Están listos para acompañarnos en esta transformación?"</strong></p>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-key"></i> Puntos Clave a Enfatizar</h5>
+                <ul>
+                    <li>Plan integral y bien estructurado</li>
+                    <li>Transformación del modelo de negocio</li>
+                    <li>ROI comprobado y beneficios cuantificables</li>
+                    <li>Factores críticos de éxito identificados</li>
+                    <li>Llamada a la acción clara y convincente</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 17: Diapositiva 16 - Preguntas y Respuestas -->
+        <div class="slide-section" id="slide17">
+            <div class="presenter-card">
+                <div class="presenter-avatar">ALL</div>
+                <div>
+                    <h4>Todo el Equipo</h4>
+                    <span class="time-badge"><i class="fas fa-clock"></i> 5-8 minutos</span>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-question-circle"></i> Diapositiva 16: Sesión de Preguntas y Respuestas</h3>
+
+            <div class="script-content">
+                <h5><i class="fas fa-microphone"></i> Guión del Equipo:</h5>
+                <p><strong>Alexander:</strong> <em>"Muchas gracias por su atención. Ahora abrimos el espacio para preguntas. Todo nuestro equipo está disponible para aclarar cualquier aspecto del proyecto."</em></p>
+                
+                <h6><strong>Distribución de Responsabilidades para Q&A:</strong></h6>
+                <ul>
+                    <li><strong>Italo (Product Owner):</strong> Preguntas sobre requisitos de negocio, valor del producto, prioridades y visión estratégica</li>
+                    <li><strong>Patricio (Scrum Master):</strong> Preguntas sobre metodología, gestión del equipo, cronograma y procesos</li>
+                    <li><strong>Claudio (QA Tester):</strong> Preguntas sobre calidad, testing, riesgos técnicos y presupuesto</li>
+                    <li><strong>Alexander (Analista de Negocio):</strong> Preguntas sobre justificación económica, stakeholders y análisis de mercado</li>
+                </ul>
+            </div>
+
+            <div class="key-points">
+                <h5><i class="fas fa-lightbulb"></i> Preguntas Frecuentes Anticipadas</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><strong>Técnicas:</strong></h6>
+                        <ul>
+                            <li>¿Por qué eligieron estas tecnologías específicas?</li>
+                            <li>¿Cómo manejarán la escalabilidad?</li>
+                            <li>¿Qué pasa si hay problemas de integración?</li>
+                            <li>¿Cómo asegurarán la seguridad de los datos?</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><strong>De Negocio:</strong></h6>
+                        <ul>
+                            <li>¿Qué pasa si cambian los requisitos?</li>
+                            <li>¿Cómo medirán el éxito del proyecto?</li>
+                            <li>¿Qué soporte post-implementación ofrecerán?</li>
+                            <li>¿Cómo capacitarán al personal?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tips-section">
+                <h6><i class="fas fa-star"></i> Consejos para Responder Preguntas</h6>
+                <ul>
+                    <li><strong>Escuchar completamente</strong> antes de responder</li>
+                    <li><strong>Ser específicos</strong> y usar ejemplos concretos</li>
+                    <li><strong>Si no saben algo,</strong> ser honestos y ofrecer investigar</li>
+                    <li><strong>Mantener respuestas concisas</strong> pero completas</li>
+                    <li><strong>Agradecer cada pregunta</strong> como oportunidad de clarificar</li>
+                </ul>
+            </div>
+
+            <div class="transition-note">
+                <i class="fas fa-handshake"></i> <strong>Cierre Final:</strong> "Gracias nuevamente por su tiempo y atención. Estamos emocionados por la oportunidad de trabajar en este proyecto transformador para 'El Glotón'."
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="navigation-controls">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">
+                <i class="fas fa-chevron-left"></i> Anterior
+            </button>
+            
+            <div class="slide-indicator">
+                <i class="fas fa-presentation"></i>
+                <span>Diapositiva <span id="currentSlideNum">1</span> de <span id="totalSlidesNum">17</span></span>
+            </div>
+            
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">
+                Siguiente <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let currentSlideIndex = 1;
+        const totalSlides = 17;
+
+        // Initialize presentation
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSlideIndicator();
+            updateNavigationButtons();
+            
+            // Auto-scroll to top when changing slides
+            document.querySelector('.presentation-container').scrollTop = 0;
+        });
+
+        // Navigation functions
+        function changeSlide(direction) {
+            const newIndex = currentSlideIndex + direction;
+            if (newIndex >= 1 && newIndex <= totalSlides) {
+                goToSlide(newIndex);
+            }
+        }
+
+        function goToSlide(slideNumber) {
+            // Hide current slide
+            document.getElementById(`slide${currentSlideIndex}`).classList.remove('active');
+            
+            // Show new slide
+            currentSlideIndex = slideNumber;
+            document.getElementById(`slide${currentSlideIndex}`).classList.add('active');
+            
+            updateSlideIndicator();
+            updateNavigationButtons();
+            
+            // Scroll to top of new slide
+            document.querySelector('.presentation-container').scrollTop = 0;
+        }
+
+        function updateSlideIndicator() {
+            document.getElementById('currentSlide').textContent = currentSlideIndex;
+            document.getElementById('totalSlides').textContent = totalSlides;
+            document.getElementById('currentSlideNum').textContent = currentSlideIndex;
+            document.getElementById('totalSlidesNum').textContent = totalSlides;
+        }
+
+        function updateNavigationButtons() {
+            document.getElementById('prevBtn').disabled = currentSlideIndex === 1;
+            document.getElementById('nextBtn').disabled = currentSlideIndex === totalSlides;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    changeSlide(-1);
+                    break;
+                case 'ArrowRight':
+                    changeSlide(1);
+                    break;
+                case 'Home':
+                    goToSlide(1);
+                    break;
+                case 'End':
+                    goToSlide(totalSlides);
+                    break;
+                case 'Escape':
+                    // Toggle fullscreen
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    } else {
+                        document.documentElement.requestFullscreen();
+                    }
+                    break;
+            }
+        });
+
+        // Add smooth transitions
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide-section');
+            slides.forEach(slide => {
+                slide.style.transition = 'opacity 0.5s ease-in-out';
+            });
+        });
+
+        // Print functionality
+        function printScript() {
+            window.print();
+        }
+
+        // Add print button
+        document.addEventListener('DOMContentLoaded', function() {
+            const navigation = document.querySelector('.navigation-controls');
+            const printBtn = document.createElement('button');
+            printBtn.className = 'nav-btn';
+            printBtn.onclick = printScript;
+            printBtn.innerHTML = '<i class="fas fa-print"></i> Imprimir';
+            printBtn.style.position = 'absolute';
+            printBtn.style.right = '20px';
+            printBtn.style.top = '20px';
+            document.body.appendChild(printBtn);
+        });
+
+        // Timer functionality for presentation practice
+        let presentationTimer = null;
+        let startTime = null;
+        let currentSlideStartTime = null;
+
+        function startTimer() {
+            startTime = new Date();
+            currentSlideStartTime = new Date();
+            
+            presentationTimer = setInterval(updateTimer, 1000);
+            
+            // Add timer display
+            if (!document.getElementById('timer')) {
+                const timerDiv = document.createElement('div');
+                timerDiv.id = 'timer';
+                timerDiv.style.cssText = `
+                    position: fixed;
+                    top: 70px;
+                    right: 20px;
+                    background: rgba(0,0,0,0.8);
+                    color: white;
+                    padding: 0.5rem 1rem;
+                    border-radius: 20px;
+                    font-weight: bold;
+                    z-index: 1000;
+                    font-family: monospace;
+                `;
+                document.body.appendChild(timerDiv);
+            }
+        }
+
+        function updateTimer() {
+            if (startTime) {
+                const now = new Date();
+                const totalElapsed = Math.floor((now - startTime) / 1000);
+                const slideElapsed = Math.floor((now - currentSlideStartTime) / 1000);
+                
+                const totalMinutes = Math.floor(totalElapsed / 60);
+                const totalSeconds = totalElapsed % 60;
+                const slideMinutes = Math.floor(slideElapsed / 60);
+                const slideSecondsOnly = slideElapsed % 60;
+                
+                document.getElementById('timer').innerHTML = `
+                    Total: ${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}<br>
+                    Slide: ${slideMinutes.toString().padStart(2, '0')}:${slideSecondsOnly.toString().padStart(2, '0')}
+                `;
+            }
+        }
+
+        function stopTimer() {
+            if (presentationTimer) {
+                clearInterval(presentationTimer);
+                presentationTimer = null;
+            }
+        }
+
+        function resetTimer() {
+            stopTimer();
+            startTime = null;
+            currentSlideStartTime = null;
+            const timerEl = document.getElementById('timer');
+            if (timerEl) {
+                timerEl.remove();
+            }
+        }
+
+        // Update slide start time when changing slides
+        const originalGoToSlide = goToSlide;
+        goToSlide = function(slideNumber) {
+            originalGoToSlide(slideNumber);
+            if (startTime) {
+                currentSlideStartTime = new Date();
+            }
+        };
+
+        // Add timer controls
+        document.addEventListener('DOMContentLoaded', function() {
+            const timerControls = document.createElement('div');
+            timerControls.style.cssText = `
+                position: fixed;
+                top: 120px
+
+                                top: 120px;
+                right: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                z-index: 1000;
+            `;
+            
+            const startBtn = document.createElement('button');
+            startBtn.className = 'btn btn-success btn-sm';
+            startBtn.onclick = startTimer;
+            startBtn.innerHTML = '<i class="fas fa-play"></i>';
+            startBtn.title = 'Iniciar cronómetro';
+            
+            const stopBtn = document.createElement('button');
+            stopBtn.className = 'btn btn-warning btn-sm';
+            stopBtn.onclick = stopTimer;
+            stopBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            stopBtn.title = 'Pausar cronómetro';
+            
+            const resetBtn = document.createElement('button');
+            resetBtn.className = 'btn btn-danger btn-sm';
+            resetBtn.onclick = resetTimer;
+            resetBtn.innerHTML = '<i class="fas fa-stop"></i>';
+            resetBtn.title = 'Reiniciar cronómetro';
+            
+            timerControls.appendChild(startBtn);
+            timerControls.appendChild(stopBtn);
+            timerControls.appendChild(resetBtn);
+            document.body.appendChild(timerControls);
+        });
+
+        // Add notes toggle functionality
+        function toggleNotes() {
+            const notes = document.querySelectorAll('.key-points, .tips-section');
+            notes.forEach(note => {
+                note.style.display = note.style.display === 'none' ? 'block' : 'none';
+            });
+        }
+
+        // Add notes toggle button
+        document.addEventListener('DOMContentLoaded', function() {
+            const notesBtn = document.createElement('button');
+            notesBtn.className = 'btn btn-info btn-sm';
+            notesBtn.onclick = toggleNotes;
+            notesBtn.innerHTML = '<i class="fas fa-sticky-note"></i> Notas';
+            notesBtn.style.cssText = `
+                position: fixed;
+                top: 200px;
+                right: 20px;
+                z-index: 1000;
+            `;
+            document.body.appendChild(notesBtn);
+        });
+
+        // Add presentation mode toggle
+        function togglePresentationMode() {
+            const container = document.querySelector('.presentation-container');
+            const navigation = document.querySelector('.navigation-controls');
+            
+            if (container.classList.contains('presentation-mode')) {
+                container.classList.remove('presentation-mode');
+                navigation.style.display = 'flex';
+                document.body.style.cursor = 'default';
+            } else {
+                container.classList.add('presentation-mode');
+                navigation.style.display = 'none';
+                document.body.style.cursor = 'none';
+                
+                // Auto-hide cursor after 3 seconds of inactivity
+                let cursorTimeout;
+                document.addEventListener('mousemove', function() {
+                    document.body.style.cursor = 'default';
+                    clearTimeout(cursorTimeout);
+                    cursorTimeout = setTimeout(() => {
+                        if (container.classList.contains('presentation-mode')) {
+                            document.body.style.cursor = 'none';
+                        }
+                    }, 3000);
+                });
+            }
+        }
+
+        // Add presentation mode button
+        document.addEventListener('DOMContentLoaded', function() {
+            const presentationBtn = document.createElement('button');
+            presentationBtn.className = 'btn btn-primary btn-sm';
+            presentationBtn.onclick = togglePresentationMode;
+            presentationBtn.innerHTML = '<i class="fas fa-desktop"></i> Modo Presentación';
+            presentationBtn.style.cssText = `
+                position: fixed;
+                top: 240px;
+                right: 20px;
+                z-index: 1000;
+            `;
+            document.body.appendChild(presentationBtn);
+        });
+
+        // Add slide overview functionality
+        function showSlideOverview() {
+            const overview = document.createElement('div');
+            overview.className = 'slide-overview';
+            overview.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.9);
+                z-index: 2000;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                padding: 20px;
+                overflow-y: auto;
+            `;
+            
+            for (let i = 1; i <= totalSlides; i++) {
+                const slideThumb = document.createElement('div');
+                slideThumb.style.cssText = `
+                    background: white;
+                    border-radius: 8px;
+                    padding: 10px;
+                    cursor: pointer;
+                    text-align: center;
+                    transition: transform 0.3s ease;
+                `;
+                
+                slideThumb.innerHTML = `
+                    <h6>Diapositiva ${i}</h6>
+                    <p class="small">${getSlideTitle(i)}</p>
+                `;
+                
+                slideThumb.addEventListener('click', function() {
+                    goToSlide(i);
+                    overview.remove();
+                });
+                
+                slideThumb.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                });
+                
+                slideThumb.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+                
+                overview.appendChild(slideThumb);
+            }
+            
+            // Close overview on ESC or click outside
+            overview.addEventListener('click', function(e) {
+                if (e.target === overview) {
+                    overview.remove();
+                }
+            });
+            
+            document.addEventListener('keydown', function closeOverview(e) {
+                if (e.key === 'Escape') {
+                    overview.remove();
+                    document.removeEventListener('keydown', closeOverview);
+                }
+            });
+            
+            document.body.appendChild(overview);
+        }
+
+        function getSlideTitle(slideNumber) {
+            const titles = [
+                'Portada del Proyecto',
+                'Información del Documento',
+                'Identificación del Proyecto',
+                'Roles y Responsabilidades',
+                'Metodologías',
+                'Categorías',
+                'RBS',
+                'Recursos',
+                'Cronograma',
+                'WBS',
+                'Presupuesto',
+                'Matriz de Riesgos',
+                'Justificación del Proyecto',
+                'Análisis de Stakeholders',
+                'Conclusiones',
+                'Preguntas y Respuestas'
+            ];
+            return titles[slideNumber - 1] || 'Diapositiva';
+        }
+
+        // Add overview button
+        document.addEventListener('DOMContentLoaded', function() {
+            const overviewBtn = document.createElement('button');
+            overviewBtn.className = 'btn btn-secondary btn-sm';
+            overviewBtn.onclick = showSlideOverview;
+            overviewBtn.innerHTML = '<i class="fas fa-th"></i> Vista General';
+            overviewBtn.style.cssText = `
+                position: fixed;
+                top: 280px;
+                right: 20px;
+                z-index: 1000;
+            `;
+            document.body.appendChild(overviewBtn);
+        });
+
+        // Add help modal
+        function showHelp() {
+            const helpModal = `
+                <div class="modal fade" id="helpModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-question-circle"></i> Ayuda - Guión de Presentación
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-keyboard"></i> Atajos de Teclado</h6>
+                                        <ul class="list-unstyled">
+                                            <li><kbd>←</kbd> Diapositiva anterior</li>
+                                            <li><kbd>→</kbd> Siguiente diapositiva</li>
+                                            <li><kbd>Home</kbd> Primera diapositiva</li>
+                                            <li><kbd>End</kbd> Última diapositiva</li>
+                                            <li><kbd>Esc</kbd> Salir pantalla completa</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-tools"></i> Herramientas</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-play text-success"></i> Cronómetro de presentación</li>
+                                            <li><i class="fas fa-sticky-note text-info"></i> Mostrar/ocultar notas</li>
+                                            <li><i class="fas fa-desktop text-primary"></i> Modo presentación</li>
+                                            <li><i class="fas fa-th text-secondary"></i> Vista general de slides</li>
+                                            <li><i class="fas fa-print text-dark"></i> Imprimir guión</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <hr>
+                                <h6><i class="fas fa-lightbulb"></i> Consejos para la Presentación</h6>
+                                <ul>
+                                    <li><strong>Tiempo total recomendado:</strong> 30-35 minutos + Q&A</li>
+                                    <li><strong>Transiciones:</strong> Cada presentador debe hacer una transición clara al siguiente</li>
+                                    <li><strong>Contacto visual:</strong> Mantener contacto visual con la audiencia</li>
+                                    <li><strong>Ritmo:</strong> Hablar despacio y claro, hacer pausas estratégicas</li>
+                                    <li><strong>Interacción:</strong> Hacer preguntas retóricas para mantener engagement</li>
+                                    <li><strong>Backup:</strong> Tener plan B en caso de problemas técnicos</li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                    <i class="fas fa-check"></i> Entendido
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            if (!document.getElementById('helpModal')) {
+                document.body.insertAdjacentHTML('beforeend', helpModal);
+            }
+            
+            const modal = new bootstrap.Modal(document.getElementById('helpModal'));
+            modal.show();
+        }
+
+        // Add help button
+        document.addEventListener('DOMContentLoaded', function() {
+            const helpBtn = document.createElement('button');
+            helpBtn.className = 'btn btn-outline-primary btn-sm';
+            helpBtn.onclick = showHelp;
+            helpBtn.innerHTML = '<i class="fas fa-question-circle"></i> Ayuda';
+            helpBtn.style.cssText = `
+                position: fixed;
+                top: 320px;
+                right: 20px;
+                z-index: 1000;
+            `;
+            document.body.appendChild(helpBtn);
+        });
+
+        // Add auto-advance functionality for practice
+        let autoAdvanceInterval = null;
+        let autoAdvanceTime = 120; // 2 minutes per slide default
+
+        function toggleAutoAdvance() {
+            if (autoAdvanceInterval) {
+                clearInterval(autoAdvanceInterval);
+                autoAdvanceInterval = null;
+                document.getElementById('autoAdvanceBtn').innerHTML = '<i class="fas fa-play"></i> Auto';
+            } else {
+                autoAdvanceInterval = setInterval(() => {
+                    if (currentSlideIndex < totalSlides) {
+                        changeSlide(1);
+                    } else {
+                        clearInterval(autoAdvanceInterval);
+                        autoAdvanceInterval = null;
+                        document.getElementById('autoAdvanceBtn').innerHTML = '<i class="fas fa-play"></i> Auto';
+                    }
+                }, autoAdvanceTime * 1000);
+                document.getElementById('autoAdvanceBtn').innerHTML = '<i class="fas fa-pause"></i> Auto';
+            }
+        }
+
+        // Add auto-advance button
+        document.addEventListener('DOMContentLoaded', function() {
+            const autoBtn = document.createElement('button');
+            autoBtn.id = 'autoAdvanceBtn';
+            autoBtn.className = 'btn btn-warning btn-sm';
+            autoBtn.onclick = toggleAutoAdvance;
+            autoBtn.innerHTML = '<i class="fas fa-play"></i> Auto';
+            autoBtn.title = 'Avance automático (2 min/slide)';
+            autoBtn.style.cssText = `
+                position: fixed;
+                top: 360px;
+                right: 20px;
+                z-index: 1000;
+            `;
+            document.body.appendChild(autoBtn);
+        });
+
+        // Performance monitoring
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📊 Guión de Presentación - Sistema El Glotón');
+            console.log('⏱️ Tiempo estimado: 30-35 minutos + Q&A');
+            console.log('👥 Presentadores: 4 miembros del equipo');
+            console.log('📋 Total de diapositivas: ' + totalSlides);
+            
+            // Log slide changes for analytics
+            const originalChangeSlide = changeSlide;
+            changeSlide = function(direction) {
+                console.log(`📍 Navegando a slide ${currentSlideIndex + direction}`);
+                originalChangeSlide(direction);
+            };
+        });
+
+        // Add export functionality
+        function exportScript() {
+            const scriptContent = document.querySelector('.presentation-container').innerHTML;
+            const exportWindow = window.open('', '_blank');
+            exportWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Guión de Presentación - El Glotón</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .slide-section { page-break-after: always; margin-bottom: 30px; }
+                        .presenter-card { background: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px; }
+                        .script-content { margin: 15px 0; }
+                        .key-points { background: #e9ecef; padding: 15px; border-radius: 5px; margin-top: 15px; }
+                        @media print { .slide-section { page-break-after: always; } }
+                    </style>
+                </head>
+                <body>
+                    <h1>Guión de Presentación - Sistema de Gestión El Glotón</h1>
+                    <p><strong>Fecha de generación:</strong> ${new Date().toLocaleDateString()}</p>
+                    <hr>
+                    ${scriptContent}
+                </body>
+
+
+                                </body>
+                </html>
+            `);
+            exportWindow.document.close();
+        }
+
+        // Add export button
+        document.addEventListener('DOMContentLoaded', function() {
+            const exportBtn = document.createElement('button');
+            exportBtn.className = 'btn btn-success btn-sm';
+            exportBtn.onclick = exportScript;
+            exportBtn.innerHTML = '<i class="fas fa-download"></i> Exportar';
+            exportBtn.title = 'Exportar guión completo';
+            exportBtn.style.cssText = `
+                position: fixed;
+                top: 400px;
+                right: 20px;
+                z-index: 1000;
+            `;
+            document.body.appendChild(exportBtn);
+        });
+
+        // Add slide validation
+        function validatePresentation() {
+            const issues = [];
+            
+            // Check if all slides have content
+            for (let i = 1; i <= totalSlides; i++) {
+                const slide = document.getElementById(`slide${i}`);
+                if (!slide) {
+                    issues.push(`Slide ${i} no encontrado`);
+                    continue;
+                }
+                
+                const scriptContent = slide.querySelector('.script-content');
+                if (!scriptContent || scriptContent.textContent.trim().length < 100) {
+                    issues.push(`Slide ${i} tiene contenido insuficiente`);
+                }
+                
+                const presenter = slide.querySelector('.presenter-avatar');
+                if (!presenter) {
+                    issues.push(`Slide ${i} no tiene presentador asignado`);
+                }
+            }
+            
+            // Check total estimated time
+            const timeElements = document.querySelectorAll('.time-badge');
+            let totalMinutes = 0;
+            timeElements.forEach(el => {
+                const timeText = el.textContent;
+                const minutes = parseFloat(timeText.match(/[\d.]+/)[0]);
+                totalMinutes += minutes;
+            });
+            
+            if (totalMinutes < 25 || totalMinutes > 40) {
+                issues.push(`Tiempo total estimado (${totalMinutes.toFixed(1)} min) fuera del rango recomendado (25-40 min)`);
+            }
+            
+            return issues;
+        }
+
+        // Add validation button
+        document.addEventListener('DOMContentLoaded', function() {
+            const validateBtn = document.createElement('button');
+            validateBtn.className = 'btn btn-info btn-sm';
+            validateBtn.onclick = function() {
+                const issues = validatePresentation();
+                if (issues.length === 0) {
+                    alert('✅ Presentación validada correctamente. No se encontraron problemas.');
+                } else {
+                    alert('⚠️ Se encontraron los siguientes problemas:\n\n' + issues.join('\n'));
+                }
+            };
+            validateBtn.innerHTML = '<i class="fas fa-check-circle"></i> Validar';
+            validateBtn.title = 'Validar presentación';
+            validateBtn.style.cssText = `
+                position: fixed;
+                top: 440px;
+                right: 20px;
+                z-index: 1000;
+            `;
+            document.body.appendChild(validateBtn);
+        });
+
+        // Add responsive design for mobile devices
+        function adjustForMobile() {
+            if (window.innerWidth < 768) {
+                const controls = document.querySelectorAll('[style*="position: fixed"][style*="right: 20px"]');
+                controls.forEach((control, index) => {
+                    control.style.cssText = `
+                        position: fixed;
+                        bottom: ${20 + (index * 50)}px;
+                        right: 10px;
+                        z-index: 1000;
+                        font-size: 0.8rem;
+                        padding: 0.25rem 0.5rem;
+                    `;
+                });
+                
+                // Adjust navigation for mobile
+                const navigation = document.querySelector('.navigation-controls');
+                if (navigation) {
+                    navigation.style.flexDirection = 'column';
+                    navigation.style.gap = '10px';
+                    navigation.style.padding = '10px';
+                }
+            }
+        }
+
+        window.addEventListener('resize', adjustForMobile);
+        document.addEventListener('DOMContentLoaded', adjustForMobile);
+
+        // Add accessibility improvements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add ARIA labels
+            const slides = document.querySelectorAll('.slide-section');
+            slides.forEach((slide, index) => {
+                slide.setAttribute('aria-label', `Diapositiva ${index + 1} de ${totalSlides}`);
+                slide.setAttribute('role', 'region');
+            });
+            
+            // Add skip navigation
+            const skipNav = document.createElement('a');
+            skipNav.href = '#slide1';
+            skipNav.textContent = 'Saltar a contenido principal';
+            skipNav.style.cssText = `
+                position: absolute;
+                top: -40px;
+                left: 6px;
+                background: #000;
+                color: #fff;
+                padding: 8px;
+                text-decoration: none;
+                z-index: 3000;
+            `;
+            skipNav.addEventListener('focus', function() {
+                this.style.top = '6px';
+            });
+            skipNav.addEventListener('blur', function() {
+                this.style.top = '-40px';
+            });
+            document.body.insertBefore(skipNav, document.body.firstChild);
+            
+            // Improve focus management
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Tab' && e.shiftKey) {
+                    // Handle reverse tab navigation
+                    e.preventDefault();
+                    const focusableElements = document.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                    const currentIndex = Array.from(focusableElements).indexOf(document.activeElement);
+                    const prevIndex = currentIndex > 0 ? currentIndex - 1 : focusableElements.length - 1;
+                    focusableElements[prevIndex].focus();
+                }
+            });
+        });
+
+        // Add presentation analytics
+        const presentationAnalytics = {
+            startTime: null,
+            slideTimings: {},
+            interactions: [],
+            
+            start() {
+                this.startTime = new Date();
+                this.slideTimings[currentSlideIndex] = new Date();
+                console.log('📊 Iniciando analytics de presentación');
+            },
+            
+            logSlideChange(fromSlide, toSlide) {
+                const now = new Date();
+                if (this.slideTimings[fromSlide]) {
+                    const timeOnSlide = now - this.slideTimings[fromSlide];
+                    console.log(`⏱️ Tiempo en slide ${fromSlide}: ${(timeOnSlide / 1000).toFixed(1)}s`);
+                }
+                this.slideTimings[toSlide] = now;
+            },
+            
+            logInteraction(type, details) {
+                this.interactions.push({
+                    timestamp: new Date(),
+                    type: type,
+                    details: details,
+                    slide: currentSlideIndex
+                });
+            },
+            
+            generateReport() {
+                const totalTime = new Date() - this.startTime;
+                const report = {
+                    totalDuration: Math.round(totalTime / 1000 / 60), // minutes
+                    slidesVisited: Object.keys(this.slideTimings).length,
+                    interactions: this.interactions.length,
+                    averageTimePerSlide: Math.round(totalTime / Object.keys(this.slideTimings).length / 1000), // seconds
+                    slideTimings: this.slideTimings,
+                    interactions: this.interactions
+                };
+                
+                console.log('📈 Reporte de presentación:', report);
+                return report;
+            }
+        };
+
+        // Initialize analytics
+        document.addEventListener('DOMContentLoaded', function() {
+            presentationAnalytics.start();
+        });
+
+        // Track slide changes
+        const originalGoToSlideAnalytics = goToSlide;
+        goToSlide = function(slideNumber) {
+            const fromSlide = currentSlideIndex;
+            originalGoToSlideAnalytics(slideNumber);
+            presentationAnalytics.logSlideChange(fromSlide, slideNumber);
+        };
+
+        // Add final summary and checklist
+        function showPresentationChecklist() {
+            const checklist = `
+                <div class="modal fade" id="checklistModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-clipboard-check"></i> Lista de Verificación Pre-Presentación
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-cog"></i> Preparación Técnica</h6>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="check1">
+                                            <label class="form-check-label" for="check1">Proyector/pantalla funcionando</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="check2">
+                                            <label class="form-check-label" for="check2">Audio del sistema verificado</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="check3">
+                                            <label class="form-check-label" for="check3">Conexión a internet estable</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="check4">
+                                            <label class="form-check-label" for="check4">Backup de presentación disponible</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="check5">
+                                            <label class="form-check-label" for="check5">Control remoto/puntero funcionando</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6><i class="fas fa-users"></i> Preparación del Equipo</h6>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="check6">
+                                            <label class="form-check-label" for="check6">Todos los presentadores presentes</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="check7">
+                                            <label class="form-check-label" for="check7">Roles y transiciones claras</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="check8">
+                                            <label class="form-check-label" for="check8">Tiempo de presentación ensayado</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="check9">
+                                            <label class="form-check-label" for="check9">Preguntas frecuentes preparadas</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="check10">
+                                            <label class="form-check-label" for="check10">Material de apoyo listo</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="alert alert-info">
+                                    <h6><i class="fas fa-lightbulb"></i> Recordatorios Finales</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>Tiempo total:</strong> 30-35 minutos + Q&A (5-8 min)</li>
+                                        <li><strong>Audiencia:</strong> Stakeholders de "El Glotón" y evaluadores</li>
+                                        <li><strong>Objetivo:</strong> Aprobar el proyecto y obtener financiamiento</li>
+                                        <li><strong>Tono:</strong> Profesional, confiado y orientado a resultados</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                                    <i class="fas fa-rocket"></i> ¡Listos para Presentar!
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            if (!document.getElementById('checklistModal')) {
+                document.body.insertAdjacentHTML('beforeend', checklist);
+            }
+            
+            const modal = new bootstrap.Modal(document.getElementById('checklistModal'));
+            modal.show();
+        }
+
+        // Add checklist button
+        document.addEventListener('DOMContentLoaded', function() {
+            const checklistBtn = document.createElement('button');
+            checklistBtn.className = 'btn btn-success btn-sm';
+            checklistBtn.onclick = showPresentationChecklist;
+            checklistBtn.innerHTML = '<i class="fas fa-clipboard-check"></i> Checklist';
+            checklistBtn.title = 'Lista de verificación pre-presentación';
+            checklistBtn.style.cssText = `
+                position: fixed;
+                top: 480px;
+                right: 20px;
+                z-index: 1000;
+            `;
+            document.body.appendChild(checklistBtn);
+        });
+
+        // Add final initialization and welcome message
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log(`
+🎯 GUIÓN DE PRESENTACIÓN - SISTEMA EL GLOTÓN
+═══════════════════════════════════════════════
+
+📊 Estadísticas:
+   • Total de diapositivas: ${totalSlides}
+   • Presentadores: 4 miembros del equipo
+   • Tiempo estimado: 30-35 minutos + Q&A
+   • Metodología: Híbrida (Scrum + PMI)
+
+🎮 Controles disponibles:
+   • ← → : Navegar entre slides
+   • Esc : Pantalla completa
+   • Botones laterales: Herramientas adicionales
+
+💡 Consejos:
+   • Usar cronómetro para practicar timing
+   • Revisar checklist antes de presentar
+   • Mantener contacto visual con audiencia
+   • Hacer transiciones claras entre presentadores
+
+¡Éxito en la presentación! 🚀
+            `);
+            
+            // Show welcome toast
+            if (typeof bootstrap !== 'undefined') {
+                const toastHtml = `
+                    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                        
+
+                                                <div id="welcomeToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <i class="fas fa-rocket text-primary me-2"></i>
+                                <strong class="me-auto">Guión de Presentación</strong>
+                                <small>Sistema El Glotón</small>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                            </div>
+                            <div class="toast-body">
+                                ¡Bienvenido al guión interactivo! Usa las herramientas laterales para practicar y preparar tu presentación.
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.insertAdjacentHTML('beforeend', toastHtml);
+                const toast = new bootstrap.Toast(document.getElementById('welcomeToast'));
+                setTimeout(() => toast.show(), 1000);
+            }
+        });
+
+        // Add error handling and recovery
+        window.addEventListener('error', function(event) {
+            console.error('Error en el guión de presentación:', event.error);
+            
+            // Show user-friendly error message
+            const errorToast = `
+                <div class="toast-container position-fixed top-0 end-0 p-3">
+                    <div class="toast bg-danger text-white" role="alert">
+                        <div class="toast-header bg-danger text-white">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong class="me-auto">Error</strong>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                        </div>
+                        <div class="toast-body">
+                            Se produjo un error. Intenta recargar la página o contacta al soporte técnico.
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', errorToast);
+            if (typeof bootstrap !== 'undefined') {
+                const toast = new bootstrap.Toast(document.querySelector('.toast.bg-danger'));
+                toast.show();
+            }
+        });
+
+        // Add performance monitoring
+        function monitorPerformance() {
+            if ('performance' in window) {
+                const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+                console.log(`⚡ Tiempo de carga: ${loadTime}ms`);
+                
+                // Monitor memory usage if available
+                if (performance.memory) {
+                    console.log(`💾 Memoria utilizada: ${(performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB`);
+                }
+            }
+        }
+
+        window.addEventListener('load', monitorPerformance);
+
+        // Add final cleanup and optimization
+        window.addEventListener('beforeunload', function() {
+            // Clear any running intervals
+            if (autoAdvanceInterval) {
+                clearInterval(autoAdvanceInterval);
+            }
+            if (presentationTimer) {
+                clearInterval(presentationTimer);
+            }
+            
+            // Generate final analytics report
+            if (presentationAnalytics.startTime) {
+                const report = presentationAnalytics.generateReport();
+                console.log('📊 Reporte final de sesión:', report);
+            }
+            
+            console.log('👋 Sesión de guión finalizada. ¡Gracias por usar la herramienta!');
+        });
+
+        // Add version info and metadata
+        const scriptMetadata = {
+            version: '2.0.0',
+            lastUpdated: '2024-12-19',
+            authors: ['Italo Riveros', 'Patricio Quintanilla', 'Claudio Sánchez', 'Alexander Seydewitz'],
+            project: 'Sistema de Gestión El Glotón',
+            institution: 'DuocUC',
+            course: 'Gestión de Proyectos',
+            totalSlides: totalSlides,
+            estimatedDuration: '30-35 minutos',
+            features: [
+                'Navegación por teclado',
+                'Cronómetro de presentación',
+                'Vista general de slides',
+                'Modo presentación',
+                'Exportación de guión',
+                'Validación automática',
+                'Analytics de uso',
+                'Lista de verificación',
+                'Responsive design',
+                'Accesibilidad mejorada'
+            ]
+        };
+
+        console.log('📋 Metadata del guión:', scriptMetadata);
+
+        // Add final CSS optimizations
+        const additionalStyles = `
+            <style>
+                /* Optimizaciones finales de CSS */
+                .presentation-mode {
+                    background: #000 !important;
+                }
+                
+                .presentation-mode .slide-section {
+                    background: #000 !important;
+                    color: #fff !important;
+                }
+                
+                .presentation-mode .presenter-card {
+                    background: rgba(255,255,255,0.1) !important;
+                    color: #fff !important;
+                }
+                
+                .presentation-mode .script-content {
+                    color: #fff !important;
+                }
+                
+                /* Mejoras de accesibilidad */
+                .btn:focus {
+                    outline: 3px solid #007bff !important;
+                    outline-offset: 2px !important;
+                }
+                
+                /* Optimizaciones para impresión */
+                @media print {
+                    .slide-section {
+                        page-break-after: always !important;
+                        margin-bottom: 0 !important;
+                    }
+                    
+                    .slide-section:last-child {
+                        page-break-after: avoid !important;
+                    }
+                    
+                    .navigation-controls,
+                    [style*="position: fixed"] {
+                        display: none !important;
+                    }
+                    
+                    .presenter-card {
+                        background: #f8f9fa !important;
+                        border: 1px solid #dee2e6 !important;
+                    }
+                    
+                    .key-points {
+                        background: #e9ecef !important;
+                        border: 1px solid #ced4da !important;
+                    }
+                }
+                
+                /* Animaciones suaves */
+                .slide-section {
+                    transition: opacity 0.3s ease-in-out !important;
+                }
+                
+                .slide-section:not(.active) {
+                    opacity: 0 !important;
+                }
+                
+                .slide-section.active {
+                    opacity: 1 !important;
+                }
+                
+                /* Mejoras para dispositivos móviles */
+                @media (max-width: 768px) {
+                    .presentation-container {
+                        padding: 10px !important;
+                    }
+                    
+                    .slide-section h3 {
+                        font-size: 1.5rem !important;
+                    }
+                    
+                    .presenter-card {
+                        flex-direction: column !important;
+                        text-align: center !important;
+                    }
+                    
+                    .navigation-controls {
+                        padding: 10px !important;
+                        gap: 10px !important;
+                    }
+                    
+                    .nav-btn {
+                        padding: 0.5rem 1rem !important;
+                        font-size: 0.9rem !important;
+                    }
+                }
+                
+                /* Estados de hover mejorados */
+                .nav-btn:hover:not(:disabled) {
+                    transform: translateY(-2px) !important;
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+                }
+                
+                .presenter-card:hover {
+                    transform: translateY(-1px) !important;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+                }
+                
+                /* Indicadores de estado */
+                .slide-indicator {
+                    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+                    color: white !important;
+                    border-radius: 20px !important;
+                    padding: 0.5rem 1rem !important;
+                    font-weight: 600 !important;
+                }
+                
+                /* Scrollbar personalizado */
+                .presentation-container::-webkit-scrollbar {
+                    width: 8px;
+                }
+                
+                .presentation-container::-webkit-scrollbar-track {
+                    background: #f1f1f1;
+                    border-radius: 4px;
+                }
+                
+                .presentation-container::-webkit-scrollbar-thumb {
+                    background: #007bff;
+                    border-radius: 4px;
+                }
+                
+                .presentation-container::-webkit-scrollbar-thumb:hover {
+                    background: #0056b3;
+                }
+            </style>
+        `;
+
+        document.head.insertAdjacentHTML('beforeend', additionalStyles);
+
+        // Final initialization message
+        console.log(`
+🎉 GUIÓN DE PRESENTACIÓN COMPLETAMENTE CARGADO
+═══════════════════════════════════════════════════
+
+✅ Sistema inicializado correctamente
+✅ ${totalSlides} diapositivas cargadas
+✅ Herramientas interactivas disponibles
+✅ Analytics y monitoreo activos
+✅ Accesibilidad y responsive design habilitados
+
+🚀 ¡Todo listo para una presentación exitosa!
+
+Recuerda:
+• Practicar con el cronómetro
+• Revisar la lista de verificación
+• Coordinar las transiciones entre presentadores
+• Mantener confianza y profesionalismo
+
+¡Mucho éxito en la presentación del Sistema El Glotón! 🍔
+        `);
+
+    </script>
+
+    <!-- Additional CSS for final polish -->
+    <style>
+        /* Estilos finales para pulir la presentación */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-section.active {
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateX(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
+        }
+
+        /* Mejoras visuales para elementos interactivos */
+        .presenter-avatar {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .presenter-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,123,255,0.4);
+        }
+
+        /* Efectos de texto mejorados */
+        .script-content h5 {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        /* Indicadores de progreso */
+        .progress-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #007bff, #28a745);
+            transition: width 0.3s ease;
+            z-index: 2000;
+        }
+
+        /* Tooltips mejorados */
+        [title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 3000;
+        }
+    </style>
+
+</body>
+</html>
+
